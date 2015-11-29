@@ -1,0 +1,18 @@
+class Player
+types
+-- TODO Define types here
+public cor = <Branco> | <Preto>;
+public Pontuacao :: pontos : nat
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+private ArqueirosVivos : set of Arqueiro;
+private ArqueirosMortos : set of Arqueiro;
+operations
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Player

@@ -1,0 +1,28 @@
+class Arqueiro
+types
+public Posicao :: x : nat y: nat;
+public Vivo = <True> | <False>;
+public Marcado = <True> | <False>;
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+private posicao : Posicao;
+-- TODO Define instance variables here
+operations
+		public Arqueiro : nat * nat ==> Arqueiro
+			Arqueiro(x,y) == (posicao := mk_Posicao(x,y););
+		public SetX: nat ==> () 
+			SetX(x) == (posicao.x := x;); 
+		public SetY : nat ==> ()
+			SetY(y) == (posicao.y := y;); 
+		public GetX : () ==> nat
+			GetX() == (return posicao.x;);
+		public GetY : () ==> nat
+			GetY() == (return posicao.y;);
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Arqueiro
