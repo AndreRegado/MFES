@@ -1,0 +1,36 @@
+class Posicao
+types
+-- TODO Define types here
+public PosicaoX :: nat;
+public PosicaoY :: nat;
+public Ocupado :: nat;
+public Adjacentes :: seq of Posicao;
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+private X: PosicaoX;
+private Y: PosicaoY;
+private ocupado : Ocupado;
+private adjacentes : Adjacentes;
+operations	
+-- TODO Define operations here
+public Posicao : PosicaoX * PosicaoY * Ocupado * Adjacentes ==> Posicao
+			 Posicao(x,y, ocup , adj) == (
+			 		X := x;
+			 		Y := y;
+			 		ocupado := ocup;
+			 		adjacentes := adj;
+			 		return self);
+			 
+pure public getOcupado: () ==> Ocupado
+	getOcupado() == return ocupado;
+	
+public ocuparEquipaWhite : Ocupado ==> ()
+			ocuparEquipaWhite() == ocupado := 1;
+			
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Posicao
