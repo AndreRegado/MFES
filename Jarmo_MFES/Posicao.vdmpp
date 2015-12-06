@@ -22,6 +22,9 @@ public Posicao : PosicaoX * PosicaoY * Ocupado * Adjacentes ==> Posicao
 			 		ocupado := ocup;
 			 		adjacentes := adj;
 			 		return self);
+
+public setAdjacentes: Adjacentes ==> ()
+	setAdjacentes(Adjacentes) == (adjacentes := adjacentes);
 			 
 pure public getOcupado: () ==> Ocupado
 	getOcupado() == return ocupado;
