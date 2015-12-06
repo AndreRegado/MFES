@@ -2,15 +2,26 @@ class Player
 types
 -- TODO Define types here
 public cor = <Branco> | <Preto>;
-public Pontuacao :: pontos : nat
-values
--- TODO Define values here
+
 instance variables
--- TODO Define instance variables here
-private ArqueirosVivos : set of Arqueiro;
-private ArqueirosMortos : set of Arqueiro;
+private cor: cor;
+private arqueiros : set of Arqueiro;
+
 operations
--- TODO Define operations here
+	public Player: cor ==> Player
+	Player(cor) == (
+		cor := cor;
+		--Aceder a posiçoes atraves da classe jarmo? Criar aqui?
+		-- dcl a1: Arqueiro := new Arqueiro(Jarmo.tabuleiro[1]);
+		dcl a1: Arqueiro := new Arqueiro();
+		dcl a2: Arqueiro := new Arqueiro();
+		dcl a3: Arqueiro := new Arqueiro();
+		dcl a4: Arqueiro := new Arqueiro();
+		dcl a5: Arqueiro := new Arqueiro();
+		arqueiros: arqueiros := [a1,a2,a3,a4,a5];
+		return self
+		);
+	
 functions
 -- TODO Define functiones here
 traces

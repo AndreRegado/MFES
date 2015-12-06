@@ -1,8 +1,8 @@
 class Arqueiro
 types
-public Posicao :: x : nat y: nat;
 public Vivo = <True> | <False>;
 public Marcado = <True> | <False>;
+public Posicao = Posicao;
 -- TODO Define types here
 values
 -- TODO Define values here
@@ -12,16 +12,14 @@ private vivo : Vivo := <True>;
 private marcado : Marcado := <False>;
 -- TODO Define instance variables here
 operations
-		public Arqueiro : nat * nat ==> Arqueiro
-			Arqueiro(x,y) == (posicao := mk_Posicao(x,y););
-		public SetX: nat ==> () 
-			SetX(x) == (posicao.x := x;); 
-		public SetY : nat ==> ()
-			SetY(y) == (posicao.y := y;); 
-		public GetX : () ==> nat
-			GetX() == (return posicao.x;);
-		public GetY : () ==> nat
-			GetY() == (return posicao.y;);
+		-- Adiconar parametro com posiçao??
+		public Arqueiro : Posicao ==> Arqueiro
+			Arqueiro(Posicao) == (posicao := Posicao;);
+		public SetPosicao: Posicao ==> () 
+			SetPosicao(Posicao) == ( posicao := Posicao;); 
+	
+		public getPosicao : () ==> Posicao
+			getPosicao() == (return posicao;);
 		public getVivo : () ==> Vivo
 			getVivo() == (return vivo;);
 		public matar : () ==> ()

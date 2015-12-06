@@ -1,12 +1,18 @@
 class Jarmo
 types
--- TODO Define types here
-values
--- TODO Define values here
+	
 instance variables
--- TODO Define instance variables here
+	jogadores: set of Player;
+	tabuleiro: set of Posicao;
+	jogadorAtual : Player;
 operations
--- TODO Define operations here
+		public Jarmo : () ==> Jarmo
+			Jarmo() == (
+			dcl p1: Player := new Player(<Branco>);
+			dcl p2: Player := new Player(<Preto>);
+			dcl jogadores: jogadores := [p1,p2];
+			return self
+			);
 functions
 -- TODO Define functiones here
 traces
