@@ -2,7 +2,6 @@ class Arqueiro
 types
 public Vivo = <True> | <False>;
 public Marcado = <True> | <False>;
-public Posicao = Posicao;
 -- TODO Define types here
 values
 -- TODO Define values here
@@ -20,12 +19,16 @@ operations
 	
 		public getPosicao : () ==> Posicao
 			getPosicao() == (return posicao;);
+			
 		public getVivo : () ==> Vivo
 			getVivo() == (return vivo;);
+			
 		public matar : () ==> ()
 			matar() == vivo := <False>;
+			
 		public getMarcado : () ==> Marcado
 			getMarcado() == (return marcado;);
+			
 		public marcar : () ==> ()
 			marcar() == marcado := <True>;	
 -- TODO Define operations here
