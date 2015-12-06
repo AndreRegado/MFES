@@ -5,6 +5,7 @@ instance variables
 	jogadores: set of Player;
 	tabuleiro: set of Posicao;
 	jogadorAtual : Player;
+	count : nat := 0;
 operations
 		public Jarmo : () ==> Jarmo
 			Jarmo() == (
@@ -47,11 +48,11 @@ operations
 		dcl p20: Posicao := new Posicao(4,3,0);
 		
 		-- Quinta linha
-		dcl p21: Posicao := new Posicao(0,4,1);
-		dcl p22: Posicao := new Posicao(1,4,1);
-		dcl p23: Posicao := new Posicao(2,4,1);
-		dcl p24: Posicao := new Posicao(3,4,1);
-		dcl p25: Posicao := new Posicao(4,4,1);
+		dcl p21: Posicao := new Posicao(0,4,2);
+		dcl p22: Posicao := new Posicao(1,4,2);
+		dcl p23: Posicao := new Posicao(2,4,2);
+		dcl p24: Posicao := new Posicao(3,4,2);
+		dcl p25: Posicao := new Posicao(4,4,2);
 		
 		-- Definir adjacentes
 		p1.setAdjacentes([p12,p8]);
@@ -82,6 +83,50 @@ operations
 		
 		tabuleiro := [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25];
 		);
+	
+		-- get turno
+		public getTurno : () ==> Player
+			getTurno() == (return jogadorAtual;);
+		
+		-- Mudar de turno
+		public MudarTurno : () ==> Player
+			MudarTurno(jogadorAtual) == (
+				if(jogadorAtual = p1) then 
+					return jogadorAtual = p2
+				else 
+					return jogadorAtual = p1;);
+		
+		-- game over : quando termina o jogo
+		public gameOver: () ==> bool
+			gameOver() == (
+				--jogador 1
+				count := 0;
+				for arqueiro in p1.arqueiros do (
+					if((p1.arqueiro.posicao.getX() = 5) | (p1.arqueiros.getVivo() = <False>)) then
+					 count := count+1;
+				)
+				if(count = 5) then return true;
+				
+				--jogador 2
+				count := 0;
+				for arqueiro in p2.arqueiros do (
+					if((p2.arqueiro.posicao.getX() = 5) | (p2.arqueiros.getVivo() = <False>)) then
+					 count := count+1;
+				)
+				
+				if(count = 5) 
+					then return true
+				else 
+						return false;
+			);
+			
+		
+		-- 
+		public colocarArqueiro : () ==> ()
+			colocarArqueiro(jogadorAtual) == (
+			);
+		
+		
 functions
 -- TODO Define functiones here
 traces
