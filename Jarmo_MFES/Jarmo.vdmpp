@@ -1,23 +1,16 @@
 class Jarmo
+
 types
-	
+
 instance variables
-	jogadores: set of Player;
-	tabuleiro: set of Posicao;
-	jogadorAtual : Player;
-	count : nat := 0;
+ private jogadores: seq of Player;
+ public tabuleiro: set of Posicao;
+ private jogadorAtual : Player;
+	
 operations
 		public Jarmo : () ==> Jarmo
 			Jarmo() == (
-			dcl p1: Player := new Player(<Branco>);
-			dcl p2: Player := new Player(<Preto>);
-			dcl jogadores: jogadores := [p1,p2];
-			return self
-			);
-			
-		public cria_tabuleiro: () ==> tabuleiro
-		cria_tabuleiro() == (
-		-- Posicao (x,y,ocupado)
+			-- Posicao (x,y,ocupado)
 		
 		-- Primeira linha
 		dcl p1: Posicao := new Posicao(0,0,1);
@@ -54,90 +47,177 @@ operations
 		dcl p24: Posicao := new Posicao(3,4,2);
 		dcl p25: Posicao := new Posicao(4,4,2);
 		
-		-- Definir adjacentes
-		p1.setAdjacentes([p12,p8]);
-		p2.setAdjacentes([p11,p9]);
-		p3.setAdjacentes([p6,p12,p10]);
-		p4.setAdjacentes([p7,p15]);
-		p5.setAdjacentes([p8,p14]);
-		p6.setAdjacentes([p3,p13]);
-		p7.setAdjacentes([p4,p8,p14,p12]);
-		p8.setAdjacentes([p1,p5,p17,p7,p9]);
-		p9.setAdjacentes([p2,p8,p14,p20]);
-		p10.setAdjacentes([p3,p13]);
-		p11.setAdjacentes([p2,p22]);
-		p12.setAdjacentes([p1,p7,p3,p19,p17,p21]);
-		p13.setAdjacentes([p6,p10,p16,p24]);
-		p14.setAdjacentes([p7,p9,p5,p25,p19]);
-		p15.setAdjacentes([p4,p18]);
-		p16.setAdjacentes([p13,p23]);
-		p17.setAdjacentes([p12,p8,p18,p24]);
-		p18.setAdjacentes([p17,p15,p19,p25,p21]);
-		p19.setAdjacentes([p22,p18,p12,p14]);
-		p20.setAdjacentes([p23,p9]);
-		p21.setAdjacentes([p12,p18]);
-		p22.setAdjacentes([p11,p19]);
-		p23.setAdjacentes([p16,p14,p20]);
-		p24.setAdjacentes([p17,p13]);
-		p25.setAdjacentes([p18,p14]);
+		dcl pl1: Player;
+		dcl pl2: Player;
 		
-		tabuleiro := [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25];
-		);
-<<<<<<< HEAD
+		-- Definir adjacentes
+		p1.setAdjacentes({p12,p8});
+		p2.setAdjacentes({p11,p9});
+		p3.setAdjacentes({p6,p12,p10});
+		p4.setAdjacentes({p7,p15});
+		p5.setAdjacentes({p8,p14});
+		p6.setAdjacentes({p3,p13});
+		p7.setAdjacentes({p4,p8,p14,p12});
+		p8.setAdjacentes({p1,p5,p17,p7,p9});
+		p9.setAdjacentes({p2,p8,p14,p20});
+		p10.setAdjacentes({p3,p13});
+		p11.setAdjacentes({p2,p22});
+		p12.setAdjacentes({p1,p7,p3,p19,p17,p21});
+		p13.setAdjacentes({p6,p10,p16,p24});
+		p14.setAdjacentes({p7,p9,p5,p25,p19});
+		p15.setAdjacentes({p4,p18});
+		p16.setAdjacentes({p13,p23});
+		p17.setAdjacentes({p12,p8,p18,p24});
+		p18.setAdjacentes({p17,p15,p19,p25,p21});
+		p19.setAdjacentes({p22,p18,p12,p14});
+		p20.setAdjacentes({p23,p9});
+		p21.setAdjacentes({p12,p18});
+		p22.setAdjacentes({p11,p19});
+		p23.setAdjacentes({p16,p14,p20});
+		p24.setAdjacentes({p17,p13});
+		p25.setAdjacentes({p18,p14});
+		
+		tabuleiro := {p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25};
 
-	public getPosicaoFromTabuleiro: nat * nat ==> Posicao
-		getPosicaoFromTabuleiro(x,y) == (
-				return iota s in set tabuleiro & (s.getX() = x & s.getY() = y))
-		pre tabuleiro <> {}
-	);
-=======
+		pl1 := new Player(<Branco>, p1,p2,p3,p4,p5);
+		pl2 := new Player(<Preto>, p21,p22,p23,p24,p25);
+		jogadores:= [pl1,pl2];
+		jogadorAtual := pl1;
+		return self;
+		);
+			
+		--public cria_tabuleiro: () ==> set of Posicao
+		--cria_tabuleiro() == (
+		-- Posicao (x,y,ocupado)
+		
+		-- Primeira linha
+		--dcl p1: Posicao := new Posicao(0,0,1);
+		--dcl p2: Posicao := new Posicao(1,0,1);
+		--dcl p3: Posicao := new Posicao(2,0,1);
+		--dcl p4: Posicao := new Posicao(3,0,1);
+		--dcl p5: Posicao := new Posicao(4,0,1);
+		
+		-- Segunda linha
+		--dcl p6: Posicao := new Posicao(0,1,0);
+		--dcl p7: Posicao := new Posicao(1,1,0);
+		--dcl p8: Posicao := new Posicao(2,1,0);
+		--dcl p9: Posicao := new Posicao(3,1,0);
+		--dcl p10: Posicao := new Posicao(4,1,0);
+		
+		-- Terceira linha
+		--dcl p11: Posicao := new Posicao(0,2,0);
+		--dcl p12: Posicao := new Posicao(1,2,0);
+		--dcl p13: Posicao := new Posicao(2,2,0);
+		--dcl p14: Posicao := new Posicao(3,2,0);
+		--dcl p15: Posicao := new Posicao(4,2,0);
+		
+		-- Quarta linha
+		--dcl p16: Posicao := new Posicao(0,3,0);
+		--dcl p17: Posicao := new Posicao(1,3,0);
+		--dcl p18: Posicao := new Posicao(2,3,0);
+		--dcl p19: Posicao := new Posicao(3,3,0);
+	 --dcl p20: Posicao := new Posicao(4,3,0);
+		
+		-- Quinta linha
+		--dcl p21: Posicao := new Posicao(0,4,2);
+		--dcl p22: Posicao := new Posicao(1,4,2);
+		--dcl p23: Posicao := new Posicao(2,4,2);
+		--dcl p24: Posicao := new Posicao(3,4,2);
+		--dcl p25: Posicao := new Posicao(4,4,2);
+		
+		-- Definir adjacentes
+		--p1.setAdjacentes({p12,p8});
+		--p2.setAdjacentes({p11,p9});
+		--p3.setAdjacentes({p6,p12,p10});
+		--p4.setAdjacentes({p7,p15});
+		--p5.setAdjacentes({p8,p14});
+		--p6.setAdjacentes({p3,p13});
+		--p7.setAdjacentes({p4,p8,p14,p12});
+		--p8.setAdjacentes({p1,p5,p17,p7,p9});
+		--p9.setAdjacentes({p2,p8,p14,p20});
+		--p10.setAdjacentes({p3,p13});
+		--p11.setAdjacentes({p2,p22});
+		--p12.setAdjacentes({p1,p7,p3,p19,p17,p21});
+		--p13.setAdjacentes({p6,p10,p16,p24});
+		--p14.setAdjacentes({p7,p9,p5,p25,p19});
+		--p15.setAdjacentes({p4,p18});
+		--p16.setAdjacentes({p13,p23});
+		--p17.setAdjacentes({p12,p8,p18,p24});
+		--p18.setAdjacentes({p17,p15,p19,p25,p21});
+		--p19.setAdjacentes({p22,p18,p12,p14});
+		--p20.setAdjacentes({p23,p9});
+		--p21.setAdjacentes({p12,p18});
+		--p22.setAdjacentes({p11,p19});
+		--p23.setAdjacentes({p16,p14,p20});
+		--p24.setAdjacentes({p17,p13});
+		--p25.setAdjacentes({p18,p14});
+		
+		--tabuleiro := {p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25};
+		--return tabuleiro;
+		--);
 	
 		-- get turno
 		public getTurno : () ==> Player
 			getTurno() == (return jogadorAtual;);
 		
-		-- Mudar de turno
-		public MudarTurno : () ==> Player
-			MudarTurno(jogadorAtual) == (
-				if(jogadorAtual = p1) then 
-					return jogadorAtual = p2
-				else 
-					return jogadorAtual = p1;);
 		
-		-- game over : quando termina o jogo
+		-- get Tabuleiro
+		public getTabuleiro: () ==> set of Posicao
+			getTabuleiro() == (return tabuleiro;);
+			
+			
+			
+
+		-- Mudar de turno
+		public MudarTurno : () ==> ()
+			MudarTurno() == (
+				if(jogadorAtual = jogadores(1)) then 
+					 	jogadorAtual := jogadores(2)
+				else 
+						jogadorAtual := jogadores(1););
+		
+	 -- game over : quando termina o jogo
 		public gameOver: () ==> bool
 			gameOver() == (
 				--jogador 1
-				count := 0;
-				for arqueiro in p1.arqueiros do (
-					if((p1.arqueiro.posicao.getX() = 5) | (p1.arqueiros.getVivo() = <False>)) then
+					dcl count: nat := 0;
+					dcl nr_vivos: nat := 0;
+					
+				for arqueiro in jogadores(1).arqueiros do (
+					if(arqueiro.getVivo() = <True>) then
+						nr_vivos:= nr_vivos + 1;);
+					
+				for arqueiro in jogadores(1).arqueiros do (
+					if((arqueiro.posicao.getX() = 5) and (arqueiro.getVivo() = <True>)) then
 					 count := count+1;
-				)
-				if(count = 5) then return true;
+				);
+				
+				if(count = nr_vivos) then return true;
 				
 				--jogador 2
 				count := 0;
-				for arqueiro in p2.arqueiros do (
-					if((p2.arqueiro.posicao.getX() = 5) | (p2.arqueiros.getVivo() = <False>)) then
-					 count := count+1;
-				)
+				nr_vivos := 0;
+				for arqueiro in jogadores(2).arqueiros do (
+					if(arqueiro.getVivo() = <True>) then
+						nr_vivos:= nr_vivos + 1;);
 				
-				if(count = 5) 
+			for arqueiro in jogadores(2).arqueiros do (
+			
+				if((arqueiro.posicao.getX() = 5) and (arqueiro.getVivo() = <True>)) then
+					 count := count+1;
+				);
+				
+				if(count = nr_vivos) 
 					then return true
 				else 
 						return false;
 			);
 			
-		
-		-- 
-		public colocarArqueiro : () ==> ()
-			colocarArqueiro(jogadorAtual) == (
-			);
+	
 		
 		
 functions
 -- TODO Define functiones here
->>>>>>> origin/master
 traces
 -- TODO Define Combinatorial Test Traces here
 end Jarmo

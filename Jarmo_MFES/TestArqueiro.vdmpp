@@ -7,16 +7,17 @@ class TestArqueiro
 		public TesteArqueiro : () ==> ()
 		TesteArqueiro() == 
             ( 	
-                 	dcl p : Arqueiro := new Arqueiro(2,3);
-                 	AssertTrue(p.GetX() = 2);
-									AssertTrue(p.GetY() = 3);
-                 	p.SetX(5);
-                 	AssertTrue(p.GetX() = 5);
-                	p.SetY(9);
-                	AssertTrue(p.GetY() = 9);
-                	AssertTrue(p.getVivo() = <True>);
-                	p.matar();
-                	AssertTrue(p.getVivo() = <False>);
+            		dcl	p1: Posicao:=new Posicao(1,0,0);
+                dcl arq: Arqueiro := new Arqueiro(p1);
+                AssertTrue(p1.getX() = 2);
+									AssertTrue(p1.getY() = 3);
+                 	p1.SetX(5);
+                 	AssertTrue(p1.getX() = 5);
+                	p1.SetY(9);
+                	AssertTrue(p1.getY() = 9);
+                	AssertTrue(arq.getVivo() = <True>);
+                	arq.matar();
+                	AssertTrue(arq.getVivo() = <False>);
             );
 
 end TestArqueiro

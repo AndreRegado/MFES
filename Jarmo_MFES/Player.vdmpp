@@ -1,26 +1,54 @@
 class Player
 types
--- TODO Define types here
-public cor = <Branco> | <Preto>;
+ 	 public Cor = <Branco> | <Preto>;
 
 instance variables
-private cor: cor;
-private arqueiros : set of Arqueiro;
+private cor: Cor;
+public arqueiros : seq of Arqueiro;
 
 operations
-	public Player: cor ==> Player
-	Player(cor) == (
-		cor := cor;
-		--Aceder a posiçoes atraves da classe jarmo? Criar aqui?
-		-- dcl a1: Arqueiro := new Arqueiro(Jarmo.tabuleiro[1]);
-		dcl a1: Arqueiro := new Arqueiro(Jarmo.tabuleiro[1]);
-		dcl a2: Arqueiro := new Arqueiro();
-		dcl a3: Arqueiro := new Arqueiro();
-		dcl a4: Arqueiro := new Arqueiro();
-		dcl a5: Arqueiro := new Arqueiro();
-		arqueiros: arqueiros := [a1,a2,a3,a4,a5];
-		return self
-		);
+	public Player: Cor * Posicao * Posicao * Posicao * Posicao * Posicao ==> Player
+	Player(tipo,p1,p2,p3,p4,p5) == (
+		
+		if(tipo = <Branco>) then (
+			dcl a1: Arqueiro := new Arqueiro(p1);
+			dcl a2: Arqueiro := new Arqueiro(p2);
+			dcl a3: Arqueiro := new Arqueiro(p3);
+			dcl a4: Arqueiro := new Arqueiro(p4);
+			dcl a5: Arqueiro := new Arqueiro(p5);
+			cor := tipo;
+	
+			--p1:= Jarmo.tabuleiro()(1);
+			--p2:= Jarmo.tabuleiro(2);
+			--p3:= Jarmo.tabuleiro(3);
+			--p4:= Jarmo.tabuleiro(4);
+			--p5:= Jarmo.tabuleiro(5);
+			
+ 		-- a1 := new Arqueiro(p1);
+		-- a2 := new Arqueiro(p2);
+		-- a3 := new Arqueiro(p3);
+		-- a4 := new Arqueiro(p4);
+		-- a5 := new Arqueiro(p5);
+		
+		arqueiros := [a1,a2,a3,a4,a5];
+		return self;
+		));
+	--	else if (tipo = <Preto>) then (
+	--		cor := tipo;
+	--		p21:= Jarmo.tabuleiro(21);
+	--		p22:= Jarmo.tabuleiro(22);
+	--		p23:= Jarmo.tabuleiro(23);
+	--		p24:= Jarmo.tabuleiro(24);
+	--		p25:= Jarmo.tabuleiro(25);
+			
+ 	--	 a1 := new Arqueiro(p21);
+	--	 a2 := new Arqueiro(p22);
+	--	 a3 := new Arqueiro(p23);
+	---	 a4 := new Arqueiro(p24);
+		-- a5 := new Arqueiro(p25);
+	--	arqueiros := {a1,a2,a3,a4,a5};
+--		return self;
+	--	));
 	
 functions
 -- TODO Define functiones here

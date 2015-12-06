@@ -6,12 +6,12 @@ public Marcado = <True> | <False>;
 values
 -- TODO Define values here
 instance variables
-private posicao : Posicao;
+public posicao : Posicao;
 private vivo : Vivo := <True>;
 private marcado : Marcado := <False>;
 -- TODO Define instance variables here
 operations
-		-- Adiconar parametro com posiçao??
+
 		public Arqueiro : Posicao ==> Arqueiro
 			Arqueiro(Posicao) == (posicao := Posicao;);
 		public SetPosicao: Posicao ==> () 
