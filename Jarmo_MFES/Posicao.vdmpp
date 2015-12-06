@@ -23,6 +23,18 @@ public Posicao : PosicaoX * PosicaoY * Ocupado * Adjacentes ==> Posicao
 			 		adjacentes := adj;
 			 		return self);
 
+pure public getX: () ==> PosicaoX
+	getX() == return X;
+	
+pure public getY: () ==> PosicaoY
+	getY() == return Y;
+	
+public SetX: nat ==> () 
+			SetX(x) == (posicao.X := x;); 
+			
+public SetY : nat ==> ()
+			SetY(y) == (posicao.Y := y;); 
+
 public setAdjacentes: Adjacentes ==> ()
 	setAdjacentes(Adjacentes) == (adjacentes := adjacentes);
 			 
@@ -30,7 +42,13 @@ pure public getOcupado: () ==> Ocupado
 	getOcupado() == return ocupado;
 	
 public ocuparEquipaWhite : Ocupado ==> ()
-			ocuparEquipaWhite() == ocupado := 1;
+			ocuparEquipaWhite() == (ocupado := 1);
+
+public ocuparEquipaBlack : Ocupado ==> ()
+			ocuparEquipaBlack() == (ocupado := 2);
+			
+public desocupar : Ocupado ==> ()
+			desocupar() == (ocupado := 0);
 			
 functions
 -- TODO Define functiones here

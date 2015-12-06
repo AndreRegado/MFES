@@ -16,7 +16,7 @@ operations
 			Arqueiro(Posicao) == (posicao := Posicao;);
 		public SetPosicao: Posicao ==> () 
 			SetPosicao(Posicao) == ( posicao := Posicao;); 
-	
+		
 		public getPosicao : () ==> Posicao
 			getPosicao() == (return posicao;);
 			
