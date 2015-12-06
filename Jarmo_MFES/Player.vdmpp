@@ -13,7 +13,7 @@ operations
 		cor := cor;
 		--Aceder a posiçoes atraves da classe jarmo? Criar aqui?
 		-- dcl a1: Arqueiro := new Arqueiro(Jarmo.tabuleiro[1]);
-		dcl a1: Arqueiro := new Arqueiro();
+		dcl a1: Arqueiro := new Arqueiro(Jarmo.tabuleiro[1]);
 		dcl a2: Arqueiro := new Arqueiro();
 		dcl a3: Arqueiro := new Arqueiro();
 		dcl a4: Arqueiro := new Arqueiro();
