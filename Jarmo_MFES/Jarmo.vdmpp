@@ -9,6 +9,7 @@ instance variables
  public tabuleiro: set of Posicao;
  private jogadorAtual : Player;
  private adjacentes_poss: set of Posicao;
+ private arqueirosPossiveis : set of Arqueiro
 	
 operations
 		public Jarmo : () ==> Jarmo
@@ -216,14 +217,84 @@ operations
 						return false;
 			);
 			
-			
-			--public mover: () ==> ()
-			--mover() == (
+									
+				-- selecionar
+					-- tem que estar vivo e nao pode esatar na ultima linha
+				-- recebe adjacentes (adjacente nao pode ter amigo)
+				-- escolhe adjacente
+				-- ver se ocupado
+						-- se sim inimigo, matar, marcar
+				-- mudar posicoes
+				-- se chegou ao fim marcado poe bool true
+				-- mudar jogador
 				
 			
+			public mover: Posicao * Posicao ==> ()
+			mover(PosInicial, PosFinal) == (
+					dcl arqueiro : Arqueiro;
+					dcl posicoes : set of Posicao;
+					arqueirosPossiveis := arqueiros_possiveis();
+					--escolhe o arqueiro a mover
+					arqueiro := (escolher_arqueiro(PosInicial, arquerosPossiveis));
+					--escolher um adjacentes possivel
+					posicoes := adjacentes(arqueiro);
+					
+					--se puder se mover
+					if(verifica(PosFinal, arqueiro)) then (
+							--mover posicao do arqueiro
+							if(jogadorAtual = jogadores(1)) then ( 
+								PosFinal := Posicao(PosFinal.getX(), PosFinal.getY(), 1);)
+							else (
+								PosFinal := Posicao(PosFinal.getX(), PosFinal.getY(), 2);)
+						);
+					-- FALTAA se chegou ao fim marcado poe bool true
+					MudarTurno();
+			);
 			
-			--);
+			--verifica se pode-se mover para a posiçao pretendida e o seu efeito
+			public verifica: Posicao * Arqueiro  ==> bool
+			verifica(Posicao,Arqueiro) == (
+				--nao esta livre
+				if not(verifica_pos(posicao)) then (
+						if(jogadorAtual = jogadores(1)) then ( 
+							--ocupado por equipa
+							if(posicao.getOcupado() <> 1) then (
+								return false;								
+								)
+							--se ocupado por inimigo
+							else (
+								--FALTA MATAR O INIMIGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo
+								Arqueiro.marcar();
+								return true;);
+							)
+						else (
+							if(jogadorAtual = jogadores(2)) then ( 
+							--ocupado por equipa
+									if(posicao.getOcupado() <> 2) then (
+										return false;								
+									)
+							--se ocupado por inimigo
+							else (
+								--FALTA MATAR O INIMIGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo
+								Arqueiro.marcar();
+								return true;);
+							););)
+				else (
+					return true;)
+			);
 			
+			--escolher o arqueiro a mover (dos possiveis)
+			public escolher_arqueiro :Posicao * set of Arqueiro ==> Arqueiro
+				escolher_arqueiro(PosInicial, arqueiroPossiveis) == (
+				dcl arqueiroAmover: Arqueiro;
+				for arqueiro in set arqueiroPossiveis do(
+					if((arqueiro.posicao.getY() = PosInicial.getY()) and (arqueiro.posicao.getX() = PosInicial.getX())) then (
+						arqueiroAmover := arqueiro;)
+					else (
+						return arqueiroAmover;)
+				);
+				return arqueiroAmover;
+			);
 			
 			public arqueiros_possiveis: () ==> seq of Arqueiro
 			arqueiros_possiveis() == (
@@ -272,25 +343,7 @@ operations
 						else
 							return false
 					);
-				
-				
-				------------------------------------------------------------	
-					public muda_pos: Arqueiro * Posicao ==> ()
-					muda_pos(arqueiro, posicao) == (
-					dcl arqueiro_matar: Arqueiro;
-					-- posicao já foi verificada 
-					
-						if (verifica_pos(posicao)) then (
-								arqueiro.marcar();
-								arqueiro_matar:= 
-								-- get arqueiro por posicao
-								-- matar 
-								-- mudar pos
 								
-						)
-					
-					);
-					
 					-- adversario do jogador atual
 					public getArqueiroPorPosicao: Posicao ==> Arqueiro
 							getArqueiroPorPosicao(posicao) == (
@@ -304,19 +357,7 @@ operations
 								then return arqueiro;
 							);
 							return arqueiro1);
-					
-			-- selecionar
-				-- tem que estar vivo e nao pode esatar na ultima linha
-				-- recebe adjacentes (adjacente nao pode ter amigo)
-				-- escolhe adjacente
-				-- ver se ocupado
-						-- se sim inimigo, matar, marcar
-				-- mudar posicoes
-				-- se chegou ao fim marcado poe bool true
-				-- mudar jogador
-				
-			
-	
+						
 		
 		
 functions
