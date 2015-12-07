@@ -9,7 +9,6 @@ public arqueiros : seq of Arqueiro;
 operations
 	public Player: Cor * Posicao * Posicao * Posicao * Posicao * Posicao ==> Player
 	Player(tipo,p1,p2,p3,p4,p5) == (
-		
 		if(tipo = <Branco>) then (
 			dcl a1: Arqueiro := new Arqueiro(p1);
 			dcl a2: Arqueiro := new Arqueiro(p2);
@@ -32,9 +31,14 @@ operations
 		
 		arqueiros := [a1,a2,a3,a4,a5];
 		return self;
-		));
-	--	else if (tipo = <Preto>) then (
-	--		cor := tipo;
+		)
+		else if (tipo = <Preto>) then (
+			dcl a1: Arqueiro := new Arqueiro(p1);
+			dcl a2: Arqueiro := new Arqueiro(p2);
+			dcl a3: Arqueiro := new Arqueiro(p3);
+			dcl a4: Arqueiro := new Arqueiro(p4);
+			dcl a5: Arqueiro := new Arqueiro(p5);
+			cor := tipo;
 	--		p21:= Jarmo.tabuleiro(21);
 	--		p22:= Jarmo.tabuleiro(22);
 	--		p23:= Jarmo.tabuleiro(23);
@@ -46,9 +50,10 @@ operations
 	--	 a3 := new Arqueiro(p23);
 	---	 a4 := new Arqueiro(p24);
 		-- a5 := new Arqueiro(p25);
-	--	arqueiros := {a1,a2,a3,a4,a5};
---		return self;
-	--	));
+		arqueiros := [a1,a2,a3,a4,a5]);
+		
+		return self;
+	);
 	
 functions
 -- TODO Define functiones here

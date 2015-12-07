@@ -4,14 +4,14 @@ types
 public PosicaoX :: nat;
 public PosicaoY :: nat;
 public Ocupado :: nat;
-public Adjacentes :: seq of Posicao;
+public Adjacentes :: set of Posicao;
 values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
 private X: nat;
 private Y: nat;
-private ocupado : nat;
+public ocupado : nat;
 public adjacentes : set of Posicao;
 operations	
 -- TODO Define operations here

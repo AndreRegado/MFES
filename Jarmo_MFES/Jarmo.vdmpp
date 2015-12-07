@@ -3,9 +3,12 @@ class Jarmo
 types
 
 instance variables
+-- Jogador 1 : Branco
+-- Jogador 2 : Preto
  private jogadores: seq of Player;
  public tabuleiro: set of Posicao;
  private jogadorAtual : Player;
+ private adjacentes_poss: set of Posicao;
 	
 operations
 		public Jarmo : () ==> Jarmo
@@ -188,7 +191,7 @@ operations
 						nr_vivos:= nr_vivos + 1;);
 					
 				for arqueiro in jogadores(1).arqueiros do (
-					if((arqueiro.posicao.getX() = 5) and (arqueiro.getVivo() = <True>)) then
+					if((arqueiro.posicao.getY() = 5) and (arqueiro.getVivo() = <True>)) then
 					 count := count+1;
 				);
 				
@@ -203,7 +206,7 @@ operations
 				
 			for arqueiro in jogadores(2).arqueiros do (
 			
-				if((arqueiro.posicao.getX() = 5) and (arqueiro.getVivo() = <True>)) then
+				if((arqueiro.posicao.getY() = 0) and (arqueiro.getVivo() = <True>)) then
 					 count := count+1;
 				);
 				
@@ -212,6 +215,106 @@ operations
 				else 
 						return false;
 			);
+			
+			
+			--public mover: () ==> ()
+			--mover() == (
+				
+			
+			
+			--);
+			
+			
+			public arqueiros_possiveis: () ==> seq of Arqueiro
+			arqueiros_possiveis() == (
+				dcl arqueiros_poss: seq of Arqueiro;
+				for arqueiro in jogadorAtual.arqueiros do (
+					if jogadorAtual = jogadores(1) then (
+						if((arqueiro.posicao.getY() <> 5) and (arqueiro.getVivo() = <True>)) then
+					 arqueiros_poss := arqueiros_poss ^ [arqueiro];)
+					else 
+						if((arqueiro.posicao.getY() <> 0) and (arqueiro.getVivo() = <True>)) then
+					 arqueiros_poss := arqueiros_poss ^ [arqueiro];				
+				);
+				return arqueiros_poss;
+			);
+			
+			
+			-- retorna adjacentes por Arqueiro
+			public adjacentes: Arqueiro ==> set of Posicao
+				adjacentes(arqueiro) == (
+				dcl adjacentes_p: set of Posicao;
+				if jogadorAtual = jogadores(1) then (
+					adjacentes_p:= adjacentes_pl1(arqueiro);
+					return adjacentes_poss;)
+				else (
+				 	adjacentes_p:= adjacentes_pl2(arqueiro));
+				 	return adjacentes_poss; );
+				
+				public adjacentes_pl1: Arqueiro ==> set of Posicao
+					adjacentes_pl1(arqueiro) == (
+					adjacentes_poss := arqueiro.posicao.adjacentes;
+					return adjacentes_poss;)
+				pre forall s in set adjacentes_poss & (s.ocupado <> 1);
+				
+				
+				public adjacentes_pl2: Arqueiro ==> set of Posicao
+					adjacentes_pl2(arqueiro) == (
+					adjacentes_poss := arqueiro.posicao.adjacentes;
+					return adjacentes_poss;)
+				pre forall s in set adjacentes_poss & (s.ocupado <> 2);
+			
+			
+				public verifica_pos: Posicao ==> bool 
+					verifica_pos(posicao) == (
+						if(posicao.getOcupado() <> 0) then
+							return true
+						else
+							return false
+					);
+				
+				
+				------------------------------------------------------------	
+					public muda_pos: Arqueiro * Posicao ==> ()
+					muda_pos(arqueiro, posicao) == (
+					dcl arqueiro_matar: Arqueiro;
+					-- posicao já foi verificada 
+					
+						if (verifica_pos(posicao)) then (
+								arqueiro.marcar();
+								arqueiro_matar:= 
+								-- get arqueiro por posicao
+								-- matar 
+								-- mudar pos
+								
+						)
+					
+					);
+					
+					-- adversario do jogador atual
+					public getArqueiroPorPosicao: Posicao ==> Arqueiro
+							getArqueiroPorPosicao(posicao) == (
+							dcl arqueiro1: Arqueiro;
+							dcl jogador: Player;
+							if(jogadorAtual = jogadores(1)) then jogador := jogadores(2)
+							else jogador:= jogadores(1);
+							
+							for arqueiro in jogador.arqueiros do (
+								if(arqueiro.posicao.getX() = posicao.getX()) and (arqueiro.posicao.getY() = posicao.getY())
+								then return arqueiro;
+							);
+							return arqueiro1);
+					
+			-- selecionar
+				-- tem que estar vivo e nao pode esatar na ultima linha
+				-- recebe adjacentes (adjacente nao pode ter amigo)
+				-- escolhe adjacente
+				-- ver se ocupado
+						-- se sim inimigo, matar, marcar
+				-- mudar posicoes
+				-- se chegou ao fim marcado poe bool true
+				-- mudar jogador
+				
 			
 	
 		
