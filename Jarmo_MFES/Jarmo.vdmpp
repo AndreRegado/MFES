@@ -3,13 +3,22 @@ class Jarmo
 types
 
 instance variables
--- Jogador 1 : Branco
--- Jogador 2 : Preto
- private jogadores: seq of Player;
+-- Jogador 1 : Branco - começa em cima
+-- Jogador 2 : Preto - começa em baixo
+ public jogadores: set of Player;
  public tabuleiro: set of Posicao;
- private jogadorAtual : Player;
- private adjacentes_poss: set of Posicao;
- private arqueirosPossiveis : set of Arqueiro
+ public jogadorAtual : Player;
+ public jogadorAdversario: Player;
+ public vencedor: Player;
+ public temp_pl: Player;
+ public adjacentes_poss: set of Posicao;
+
+ 
+ public recupera_jog: bool;
+ public arq_a_matar: Arqueiro;
+ 
+-- private arq_a_mover: Arqueiro;
+-- private pos_nova: Posicao;
 	
 operations
 		public Jarmo : () ==> Jarmo
@@ -85,81 +94,12 @@ operations
 
 		pl1 := new Player(<Branco>, p1,p2,p3,p4,p5);
 		pl2 := new Player(<Preto>, p21,p22,p23,p24,p25);
-		jogadores:= [pl1,pl2];
+		jogadores:= {pl1,pl2};
 		jogadorAtual := pl1;
+		jogadorAdversario := pl2;
 		return self;
 		);
-			
-		--public cria_tabuleiro: () ==> set of Posicao
-		--cria_tabuleiro() == (
-		-- Posicao (x,y,ocupado)
-		
-		-- Primeira linha
-		--dcl p1: Posicao := new Posicao(0,0,1);
-		--dcl p2: Posicao := new Posicao(1,0,1);
-		--dcl p3: Posicao := new Posicao(2,0,1);
-		--dcl p4: Posicao := new Posicao(3,0,1);
-		--dcl p5: Posicao := new Posicao(4,0,1);
-		
-		-- Segunda linha
-		--dcl p6: Posicao := new Posicao(0,1,0);
-		--dcl p7: Posicao := new Posicao(1,1,0);
-		--dcl p8: Posicao := new Posicao(2,1,0);
-		--dcl p9: Posicao := new Posicao(3,1,0);
-		--dcl p10: Posicao := new Posicao(4,1,0);
-		
-		-- Terceira linha
-		--dcl p11: Posicao := new Posicao(0,2,0);
-		--dcl p12: Posicao := new Posicao(1,2,0);
-		--dcl p13: Posicao := new Posicao(2,2,0);
-		--dcl p14: Posicao := new Posicao(3,2,0);
-		--dcl p15: Posicao := new Posicao(4,2,0);
-		
-		-- Quarta linha
-		--dcl p16: Posicao := new Posicao(0,3,0);
-		--dcl p17: Posicao := new Posicao(1,3,0);
-		--dcl p18: Posicao := new Posicao(2,3,0);
-		--dcl p19: Posicao := new Posicao(3,3,0);
-	 --dcl p20: Posicao := new Posicao(4,3,0);
-		
-		-- Quinta linha
-		--dcl p21: Posicao := new Posicao(0,4,2);
-		--dcl p22: Posicao := new Posicao(1,4,2);
-		--dcl p23: Posicao := new Posicao(2,4,2);
-		--dcl p24: Posicao := new Posicao(3,4,2);
-		--dcl p25: Posicao := new Posicao(4,4,2);
-		
-		-- Definir adjacentes
-		--p1.setAdjacentes({p12,p8});
-		--p2.setAdjacentes({p11,p9});
-		--p3.setAdjacentes({p6,p12,p10});
-		--p4.setAdjacentes({p7,p15});
-		--p5.setAdjacentes({p8,p14});
-		--p6.setAdjacentes({p3,p13});
-		--p7.setAdjacentes({p4,p8,p14,p12});
-		--p8.setAdjacentes({p1,p5,p17,p7,p9});
-		--p9.setAdjacentes({p2,p8,p14,p20});
-		--p10.setAdjacentes({p3,p13});
-		--p11.setAdjacentes({p2,p22});
-		--p12.setAdjacentes({p1,p7,p3,p19,p17,p21});
-		--p13.setAdjacentes({p6,p10,p16,p24});
-		--p14.setAdjacentes({p7,p9,p5,p25,p19});
-		--p15.setAdjacentes({p4,p18});
-		--p16.setAdjacentes({p13,p23});
-		--p17.setAdjacentes({p12,p8,p18,p24});
-		--p18.setAdjacentes({p17,p15,p19,p25,p21});
-		--p19.setAdjacentes({p22,p18,p12,p14});
-		--p20.setAdjacentes({p23,p9});
-		--p21.setAdjacentes({p12,p18});
-		--p22.setAdjacentes({p11,p19});
-		--p23.setAdjacentes({p16,p14,p20});
-		--p24.setAdjacentes({p17,p13});
-		--p25.setAdjacentes({p18,p14});
-		
-		--tabuleiro := {p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25};
-		--return tabuleiro;
-		--);
-	
+
 		-- get turno
 		public getTurno : () ==> Player
 			getTurno() == (return jogadorAtual;);
@@ -170,195 +110,111 @@ operations
 			getTabuleiro() == (return tabuleiro;);
 			
 			
-			
 
 		-- Mudar de turno
 		public MudarTurno : () ==> ()
 			MudarTurno() == (
-				if(jogadorAtual = jogadores(1)) then 
-					 	jogadorAtual := jogadores(2)
-				else 
-						jogadorAtual := jogadores(1););
+			jogadorAtual := iota s in set jogadores & s <> jogadorAtual;
+			jogadorAdversario := iota q in set jogadores & q <> jogadorAtual;);
+				
 		
 	 -- game over : quando termina o jogo
-		public gameOver: () ==> bool
+	pure public gameOver: () ==> bool
 			gameOver() == (
-				--jogador 1
-					dcl count: nat := 0;
-					dcl nr_vivos: nat := 0;
-					
-				for arqueiro in jogadores(1).arqueiros do (
-					if(arqueiro.getVivo() = <True>) then
-						nr_vivos:= nr_vivos + 1;);
-					
-				for arqueiro in jogadores(1).arqueiros do (
-					if((arqueiro.posicao.getY() = 5) and (arqueiro.getVivo() = <True>)) then
-					 count := count+1;
-				);
-				
-				if(count = nr_vivos) then return true;
-				
-				--jogador 2
-				count := 0;
-				nr_vivos := 0;
-				for arqueiro in jogadores(2).arqueiros do (
-					if(arqueiro.getVivo() = <True>) then
-						nr_vivos:= nr_vivos + 1;);
-				
-			for arqueiro in jogadores(2).arqueiros do (
-			
-				if((arqueiro.posicao.getY() = 0) and (arqueiro.getVivo() = <True>)) then
-					 count := count+1;
-				);
-				
-				if(count = nr_vivos) 
-					then return true
-				else 
-						return false;
-			);
-			
+				dcl res: bool := true;
+				if (jogadorAtual.cor = <Branco>) then (
+					for all arq in set jogadorAtual.arqueiros do
+								if ( arq.vivo = <True> and arq.posicao.getY() <> 4) then 
+									res:= false;)
+					else
+					for all arq in set jogadorAtual.arqueiros do
+								if ( arq.vivo = <True> and arq.posicao.getY() <> 0) then 
+									res:= false;
 									
-				-- selecionar
-					-- tem que estar vivo e nao pode esatar na ultima linha
-				-- recebe adjacentes (adjacente nao pode ter amigo)
-				-- escolhe adjacente
-				-- ver se ocupado
-						-- se sim inimigo, matar, marcar
-				-- mudar posicoes
-				-- se chegou ao fim marcado poe bool true
-				-- mudar jogador
-				
+					return res;);
 			
-			public mover: Posicao * Posicao ==> ()
-			mover(PosInicial, PosFinal) == (
-					dcl arqueiro : Arqueiro;
-					dcl posicoes : set of Posicao;
-					arqueirosPossiveis := arqueiros_possiveis();
-					--escolhe o arqueiro a mover
-					arqueiro := (escolher_arqueiro(PosInicial, arquerosPossiveis));
-					--escolher um adjacentes possivel
-					posicoes := adjacentes(arqueiro);
-					
-					--se puder se mover
-					if(verifica(PosFinal, arqueiro)) then (
-							--mover posicao do arqueiro
-							if(jogadorAtual = jogadores(1)) then ( 
-								PosFinal := Posicao(PosFinal.getX(), PosFinal.getY(), 1);)
-							else (
-								PosFinal := Posicao(PosFinal.getX(), PosFinal.getY(), 2);)
-						);
-					-- FALTAA se chegou ao fim marcado poe bool true
-					MudarTurno();
-			);
-			
-			--verifica se pode-se mover para a posiçao pretendida e o seu efeito
-			public verifica: Posicao * Arqueiro  ==> bool
-			verifica(Posicao,Arqueiro) == (
-				--nao esta livre
-				if not(verifica_pos(posicao)) then (
-						if(jogadorAtual = jogadores(1)) then ( 
-							--ocupado por equipa
-							if(posicao.getOcupado() <> 1) then (
-								return false;								
-								)
-							--se ocupado por inimigo
-							else (
-								--FALTA MATAR O INIMIGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo
-								Arqueiro.marcar();
-								return true;);
-							)
-						else (
-							if(jogadorAtual = jogadores(2)) then ( 
-							--ocupado por equipa
-									if(posicao.getOcupado() <> 2) then (
-										return false;								
-									)
-							--se ocupado por inimigo
-							else (
-								--FALTA MATAR O INIMIGOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo
-								Arqueiro.marcar();
-								return true;);
-							););)
-				else (
-					return true;)
-			);
-			
-			--escolher o arqueiro a mover (dos possiveis)
-			public escolher_arqueiro :Posicao * set of Arqueiro ==> Arqueiro
-				escolher_arqueiro(PosInicial, arqueiroPossiveis) == (
-				dcl arqueiroAmover: Arqueiro;
-				for arqueiro in set arqueiroPossiveis do(
-					if((arqueiro.posicao.getY() = PosInicial.getY()) and (arqueiro.posicao.getX() = PosInicial.getX())) then (
-						arqueiroAmover := arqueiro;)
-					else (
-						return arqueiroAmover;)
-				);
-				return arqueiroAmover;
-			);
-			
-			public arqueiros_possiveis: () ==> seq of Arqueiro
-			arqueiros_possiveis() == (
-				dcl arqueiros_poss: seq of Arqueiro;
-				for arqueiro in jogadorAtual.arqueiros do (
-					if jogadorAtual = jogadores(1) then (
-						if((arqueiro.posicao.getY() <> 5) and (arqueiro.getVivo() = <True>)) then
-					 arqueiros_poss := arqueiros_poss ^ [arqueiro];)
-					else 
-						if((arqueiro.posicao.getY() <> 0) and (arqueiro.getVivo() = <True>)) then
-					 arqueiros_poss := arqueiros_poss ^ [arqueiro];				
-				);
-				return arqueiros_poss;
-			);
-			
-			
-			-- retorna adjacentes por Arqueiro
-			public adjacentes: Arqueiro ==> set of Posicao
-				adjacentes(arqueiro) == (
-				dcl adjacentes_p: set of Posicao;
-				if jogadorAtual = jogadores(1) then (
-					adjacentes_p:= adjacentes_pl1(arqueiro);
-					return adjacentes_poss;)
-				else (
-				 	adjacentes_p:= adjacentes_pl2(arqueiro));
-				 	return adjacentes_poss; );
-				
-				public adjacentes_pl1: Arqueiro ==> set of Posicao
-					adjacentes_pl1(arqueiro) == (
-					adjacentes_poss := arqueiro.posicao.adjacentes;
-					return adjacentes_poss;)
-				pre forall s in set adjacentes_poss & (s.ocupado <> 1);
-				
-				
-				public adjacentes_pl2: Arqueiro ==> set of Posicao
-					adjacentes_pl2(arqueiro) == (
-					adjacentes_poss := arqueiro.posicao.adjacentes;
-					return adjacentes_poss;)
-				pre forall s in set adjacentes_poss & (s.ocupado <> 2);
-			
-			
+			-- verfifica se posicao esta ocupada
 				public verifica_pos: Posicao ==> bool 
 					verifica_pos(posicao) == (
-						if(posicao.getOcupado() <> 0) then
-							return true
-						else
-							return false
+						return posicao.getOcupado() <> 0
 					);
-								
-					-- adversario do jogador atual
-					public getArqueiroPorPosicao: Posicao ==> Arqueiro
-							getArqueiroPorPosicao(posicao) == (
-							dcl arqueiro1: Arqueiro;
-							dcl jogador: Player;
-							if(jogadorAtual = jogadores(1)) then jogador := jogadores(2)
-							else jogador:= jogadores(1);
+					
+				
+				-- Adicionar parametros jogador e nova pos para teste
+				
+				public jogada: Arqueiro * Posicao ==> ()
+					jogada(arq_a_mover, pos_nova) == (
+				
+						-- Escolher jogador a recuperar se for o caso
+						-- !!!!!!!tem que ser feito no jogador diretamente!!!!!!!!
+						if(verifica_pos(pos_nova)) then (
 							
-							for arqueiro in jogador.arqueiros do (
-								if(arqueiro.posicao.getX() = posicao.getX()) and (arqueiro.posicao.getY() = posicao.getY())
-								then return arqueiro;
+							jogadorAtual.marcaArqueiro(arq_a_mover.posicao);
+							-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
+							arq_a_mover.marcar();
+							jogadorAdversario.mataArqueiro(pos_nova);
+							
+							-- Se matou e chegou à ultima posicao entao pode recuperar um morto
+							if (jogadorAtual.cor = <Branco>) then 
+								 (if(pos_nova.getY() = 5) then
+									recupera_jog := true;)
+							else
+								 (if(pos_nova.getY() = 0) then
+									recupera_jog := true;)
 							);
-							return arqueiro1);
+						-- desocupar posicao antiga e assumir nova
+						-- !!!!!!!tem que ser feito no tabuleiro e no jogador diretamente!!!!!!!!
+						jogadorAtual.desocupaPos(arq_a_mover);
+						-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
+						arq_a_mover.posicao.desocupar();
+						jogadorAtual.ocupaPos(arq_a_mover, pos_nova);
 						
-		
+						-- !!!!!!!tem que ser feito no tabuleiro!!!!!!!!!!!!!--
+						if (jogadorAtual.cor = <Branco>) then 
+							(arq_a_mover.posicao.ocuparEquipaWhite();)
+						else
+							arq_a_mover.posicao.ocuparEquipaBlack();
+							
+						MudarTurno();)
+						
+						-- fazer sem ser por jogador atual?
+							--dcl pontosPl1: nat:=0;
+					--dcl pontosPl2: nat:=0;
+						--else (
+						--pontosPl1 := jogadorAtual.contaPontos();
+					--	pontosPl2 := jogadorAdversario.contaPontos();
+						
+						--if (pontosPl1 > pontosPl2) then
+						--	vencedor := jogadorAtual
+						--else
+						--	vencedor := jogadorAdversario;
+						--)
+
+					--)
+					pre
+					(not gameOver() and
+					-- arqueiro a mover esta no set de arqueiros do jogadoratual, está vivo,
+					-- não está na ultima posicao e a posicao nova faz parte das posicoes adjacentes
+					-- à peça onde está agora
+					((jogadorAtual.cor = <Branco> 
+					and arq_a_mover in set jogadorAtual.arqueiros 
+					and (arq_a_mover.vivo = <True>)
+					and arq_a_mover.posicao.getY() <> 4
+					and pos_nova in set arq_a_mover.posicao.adjacentes
+					or
+					-- arqueiro a mover esta no set de arqueiros do jogadoratual, está vivo,
+					-- não está na ultima posicao e a posicao nova faz parte das posicoes adjacentes
+					-- à peça onde está agora
+					(jogadorAtual.cor = <Preto> 
+					and arq_a_mover in set jogadorAtual.arqueiros 
+					and (arq_a_mover.vivo = <True>)
+					and arq_a_mover.posicao.getY() <> 0 
+					and pos_nova in set arq_a_mover.posicao.adjacentes
+					))));
+				
+
+	
+					-- Repor jogador morto
 		
 functions
 -- TODO Define functiones here

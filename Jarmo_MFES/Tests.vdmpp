@@ -1,0 +1,104 @@
+class Tests
+	operations
+		public AssertTrue : bool ==> ()
+		AssertTrue(a) == return 
+            pre a;
+
+		public Tests1 : () ==> ()
+		Tests1() == 
+            ( 	
+            		dcl	p1: Posicao:=new Posicao(1,0,0);
+                dcl arq: Arqueiro := new Arqueiro(p1);
+                AssertTrue(p1.getX() = 1);
+									AssertTrue(p1.getY() = 0);
+                 	p1.SetX(5);
+                 	AssertTrue(p1.getX() = 5);
+                	p1.SetY(9);
+                	AssertTrue(p1.getY() = 9);
+                	AssertTrue(arq.getVivo() = <True>);
+                	arq.matar();
+                	AssertTrue(arq.getVivo() = <False>);
+            );
+            
+    public Tests_inicia_board : () ==> ()
+		Tests_inicia_board() == 
+            ( 	
+            		dcl	j_1: Jarmo:=new Jarmo();
+            		dcl p1: Posicao := new Posicao(0,0,1);
+   							dcl a1: Arqueiro := new Arqueiro(p1);
+   							dcl arq_movido: Arqueiro;
+   							dcl p12: Posicao := new Posicao(1,2,0);
+   							
+   							dcl p_nova: Posicao := new Posicao (1,2,1);
+   							dcl arq_mov_comp: Arqueiro := new Arqueiro(p_nova);
+   							--Jogada de teste com 1º arqueiro de <Branco> para (1,2)
+   							j_1.jogada(a1,p12);
+   							
+   							
+   							-- Troca jogador atual
+               	AssertTrue(j_1.jogadorAtual.cor = <Preto>);
+               	
+               	arq_movido := iota s in set j_1.jogadorAdversario.arqueiros
+               	& (s.posicao.getX() = 1 and s.posicao.getY() = 2 and s.posicao.ocupado = 1);
+              	
+              	-- Testa se arqueiro movido tem as caracteristicas corretas
+              	AssertTrue(arq_movido <> arq_mov_comp);
+            );
+            
+        -- teste muda turno. Jogador inicial é <Branco> e deve passar a <Preto>
+    public Tests_muda_turno : () ==> ()
+		Tests_muda_turno() == (
+					dcl	j_1: Jarmo:=new Jarmo();
+					
+					j_1.MudarTurno();
+					AssertTrue(j_1.jogadorAtual.cor = <Preto>));
+					
+		-- teste matar um arqueiro por posicao
+		   public Tests_mata_arq_pos: () ==> ()
+		Tests_mata_arq_pos() == (
+					-- para criar um jogador
+					dcl p1: Posicao := new Posicao(0,0,1);
+					dcl p2: Posicao := new Posicao(1,0,1);
+					dcl p3: Posicao := new Posicao(2,0,1);
+					dcl p4: Posicao := new Posicao(3,0,1);
+					dcl p5: Posicao := new Posicao(4,0,1);
+					
+					dcl a1: Arqueiro := new Arqueiro(p1);
+					dcl pl1: Player := new Player(<Branco>, p1,p2,p3,p4,p5);
+					AssertTrue(pl1.arqueiroPorPosicao(p1).vivo = <True>);
+					-- mata arqueiro na p1
+					pl1.mataArqueiro(p1);
+					AssertTrue(pl1.arqueiroPorPosicao(p1).vivo = <False>));
+					
+		-- teste gameOver
+		   public Tests_gameOver: () ==> ()
+		Tests_gameOver() == (
+		-- Quinta linha
+		dcl p21: Posicao := new Posicao(0,4,1);
+		dcl p22: Posicao := new Posicao(1,4,1);
+		dcl p23: Posicao := new Posicao(2,4,1);
+		dcl p24: Posicao := new Posicao(3,4,1);
+		dcl p25: Posicao := new Posicao(4,4,1);
+		
+		dcl a1: Arqueiro := new Arqueiro(p21);
+		dcl a2: Arqueiro := new Arqueiro(p22);
+		dcl a3: Arqueiro := new Arqueiro(p23);
+		dcl a4: Arqueiro := new Arqueiro(p24);
+		dcl a5: Arqueiro := new Arqueiro(p25);
+		
+		-- arqueiros do jogador branco nas posicoes de fim do jogo
+		dcl arqueiros: set of Arqueiro := {a1,a2,a3,a4,a5};
+							
+		dcl	j_1: Jarmo:=new Jarmo();
+					
+					AssertTrue(j_1.gameOver() = false);
+					
+					j_1.jogadorAtual.setArqueiros(arqueiros);
+					
+					AssertTrue(j_1.gameOver() = true);
+					);
+	
+		
+
+
+end Tests

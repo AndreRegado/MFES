@@ -3,8 +3,8 @@ types
  	 public Cor = <Branco> | <Preto>;
 
 instance variables
-private cor: Cor;
-public arqueiros : seq of Arqueiro;
+public cor: Cor;
+public arqueiros : set of Arqueiro;
 
 operations
 	public Player: Cor * Posicao * Posicao * Posicao * Posicao * Posicao ==> Player
@@ -15,21 +15,9 @@ operations
 			dcl a3: Arqueiro := new Arqueiro(p3);
 			dcl a4: Arqueiro := new Arqueiro(p4);
 			dcl a5: Arqueiro := new Arqueiro(p5);
-			cor := tipo;
 	
-			--p1:= Jarmo.tabuleiro()(1);
-			--p2:= Jarmo.tabuleiro(2);
-			--p3:= Jarmo.tabuleiro(3);
-			--p4:= Jarmo.tabuleiro(4);
-			--p5:= Jarmo.tabuleiro(5);
-			
- 		-- a1 := new Arqueiro(p1);
-		-- a2 := new Arqueiro(p2);
-		-- a3 := new Arqueiro(p3);
-		-- a4 := new Arqueiro(p4);
-		-- a5 := new Arqueiro(p5);
-		
-		arqueiros := [a1,a2,a3,a4,a5];
+		arqueiros := {a1,a2,a3,a4,a5};
+		cor := tipo;
 		return self;
 		)
 		else if (tipo = <Preto>) then (
@@ -38,23 +26,84 @@ operations
 			dcl a3: Arqueiro := new Arqueiro(p3);
 			dcl a4: Arqueiro := new Arqueiro(p4);
 			dcl a5: Arqueiro := new Arqueiro(p5);
-			cor := tipo;
-	--		p21:= Jarmo.tabuleiro(21);
-	--		p22:= Jarmo.tabuleiro(22);
-	--		p23:= Jarmo.tabuleiro(23);
-	--		p24:= Jarmo.tabuleiro(24);
-	--		p25:= Jarmo.tabuleiro(25);
 			
- 	--	 a1 := new Arqueiro(p21);
-	--	 a2 := new Arqueiro(p22);
-	--	 a3 := new Arqueiro(p23);
-	---	 a4 := new Arqueiro(p24);
-		-- a5 := new Arqueiro(p25);
-		arqueiros := [a1,a2,a3,a4,a5]);
-		
+
+		arqueiros := {a1,a2,a3,a4,a5});
+		cor := tipo;
 		return self;
 	);
 	
+	public contaPontos: () ==> nat
+		contaPontos() == (
+			dcl pontos: nat:=0;
+			-- Se jogador branco entao valem 2 pontos os arqueiros que estiverem na posicao y=5
+			if(cor = <Branco>) then (
+				for all arqueiro in set arqueiros do (
+				if (arqueiro.posicao.getY() = 5 and arqueiro.vivo = <True>) then
+						pontos := pontos + 2
+				else(
+						pontos := pontos + 1;)))
+			-- Se jogador preto entao valem 2 pontos os arqueiros que estiverem na posicao y=0
+			else (
+				for all arqueiro in set arqueiros do (
+				if (arqueiro.posicao.getY() = 0 and arqueiro.vivo = <True>) then
+						pontos := pontos + 2
+				else(
+						pontos := pontos + 1;)));
+			return pontos;
+		
+		);
+		
+		-- mata arqueiro que esta na posicao pos
+		public mataArqueiro: Posicao ==> ()
+			mataArqueiro(pos) == (
+				for all arq in set arqueiros do
+					if(arq.posicao = pos) then (
+						arq.matar();
+						return)
+			);
+			
+		-- marca arqueiro que esta na posicao pos	
+			public marcaArqueiro: Posicao ==> ()
+			marcaArqueiro(pos) == (
+				for all arq in set arqueiros do
+					if(arq.posicao = pos) then (
+						arq.marcar();
+						return)
+			);
+			
+		-- retorna arqueiro por posicao
+		public arqueiroPorPosicao: Posicao ==> Arqueiro
+				arqueiroPorPosicao(pos) == (
+						dcl arq: Arqueiro;
+						arq := iota x in set arqueiros & x.posicao = pos;
+						return arq;
+				);
+				
+		-- define set de arqueiros (para testes)
+		public setArqueiros: set of Arqueiro ==> ()
+			setArqueiros(arqs) == (
+				arqueiros:=arqs;
+			);
+	
+	
+		-- desocupar posicao atraves de arqueiro
+		public desocupaPos: Arqueiro ==> ()
+				desocupaPos(arq) == (
+				for all s in set arqueiros do (
+					if (s = arq) then
+						s.posicao.desocupar();
+		));
+		
+		-- ocupar posicao atraves de arqueiro
+		public ocupaPos: Arqueiro * Posicao ==> ()
+				ocupaPos(arq, pos_nova) == (
+				for all s in set arqueiros do (
+					if (s = arq) then
+						s.SetPosicao(pos_nova);
+		));
+			
+			
 functions
 -- TODO Define functiones here
 traces

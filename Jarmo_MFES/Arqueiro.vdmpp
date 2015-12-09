@@ -7,7 +7,7 @@ values
 -- TODO Define values here
 instance variables
 public posicao : Posicao;
-private vivo : Vivo := <True>;
+public vivo : Vivo := <True>;
 private marcado : Marcado := <False>;
 -- TODO Define instance variables here
 operations
