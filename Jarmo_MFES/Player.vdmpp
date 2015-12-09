@@ -96,11 +96,28 @@ operations
 		));
 		
 		-- ocupar posicao atraves de arqueiro
-		public ocupaPos: Arqueiro * Posicao ==> ()
-				ocupaPos(arq, pos_nova) == (
+		public novaPos: Arqueiro * Posicao ==> ()
+				novaPos(arq, pos_nova) == (
 				for all s in set arqueiros do (
 					if (s = arq) then
 						s.SetPosicao(pos_nova);
+		));
+		
+		
+		-- ocupar posicao com Arqueiro Branco
+		public ocupaPosBranco: Arqueiro ==> ()
+				ocupaPosBranco(arq) == (
+				for all s in set arqueiros do (
+					if (s = arq) then
+						s.posicao.ocuparEquipaBranco();
+		));
+		
+		-- ocupar posicao com Arqueiro Preto
+		public ocupaPosPreto: Arqueiro ==> ()
+				ocupaPosPreto(arq) == (
+				for all s in set arqueiros do (
+					if (s = arq) then
+						s.posicao.ocuparEquipaPreto();
 		));
 			
 			

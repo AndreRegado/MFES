@@ -40,11 +40,11 @@ public setAdjacentes: set of Posicao ==> ()
 pure public getOcupado: () ==> nat
 	getOcupado() == return ocupado;
 	
-public ocuparEquipaWhite : () ==> ()
-			ocuparEquipaWhite() == (ocupado := 1);
+public ocuparEquipaBranco : () ==> ()
+			ocuparEquipaBranco() == (ocupado := 1);
 
-public ocuparEquipaBlack : () ==> ()
-			ocuparEquipaBlack() == (ocupado := 2);
+public ocuparEquipaPreto : () ==> ()
+			ocuparEquipaPreto() == (ocupado := 2);
 			
 public desocupar : () ==> ()
 			desocupar() == (ocupado := 0);

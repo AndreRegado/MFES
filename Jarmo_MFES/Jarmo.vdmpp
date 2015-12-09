@@ -163,17 +163,24 @@ operations
 									recupera_jog := true;)
 							);
 						-- desocupar posicao antiga e assumir nova
-						-- !!!!!!!tem que ser feito no tabuleiro e no jogador diretamente!!!!!!!!
 						jogadorAtual.desocupaPos(arq_a_mover);
+						-- desocupa no tabuleiro
+						desocupaTab(arq_a_mover.posicao);
 						-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 						arq_a_mover.posicao.desocupar();
-						jogadorAtual.ocupaPos(arq_a_mover, pos_nova);
+						jogadorAtual.novaPos(arq_a_mover, pos_nova);
 						
-						-- !!!!!!!tem que ser feito no tabuleiro!!!!!!!!!!!!!--
+				
 						if (jogadorAtual.cor = <Branco>) then 
-							(arq_a_mover.posicao.ocuparEquipaWhite();)
+								(
+								-- ocupa tab primeiro porque posicao vai ser mudada e depois falha a comparaçao
+								ocupaTabBranco(arq_a_mover.posicao);
+								jogadorAtual.ocupaPosBranco(arq_a_mover);
+								)
 						else
-							arq_a_mover.posicao.ocuparEquipaBlack();
+								(
+								ocupaTabPreto(arq_a_mover.posicao);
+								jogadorAtual.ocupaPosPreto(arq_a_mover));
 							
 						MudarTurno();)
 						
@@ -212,9 +219,50 @@ operations
 					and pos_nova in set arq_a_mover.posicao.adjacentes
 					))));
 				
-
+		
 	
-					-- Repor jogador morto
+					-- Falta contar pontos
+					-- Falta Repor jogador morto
+					-- Testar 
+									-- jogadorAtual.desocupaPos(arq_a_mover);
+									-- desocupaTab(arq_a_mover.posicao);
+									-- arq_a_mover.posicao.desocupar();
+									-- jogadorAtual.novaPos(arq_a_mover, pos_nova);
+									-- ocupaTabBranco(arq_a_mover.posicao);
+								  -- jogadorAtual.ocupaPosBranco(arq_a_mover);
+								  -- ocupaTabPreto(arq_a_mover.posicao);
+								  -- jogadorAtual.ocupaPosPreto(arq_a_mover);
+								  -- jogada
+					
+					
+					
+					-- desocupa posicao pos no tabuleiro
+					public desocupaTab: Posicao ==> ()
+						desocupaTab(pos) == (
+								for all pos_temp in set tabuleiro do (
+									if(pos_temp = pos) then (
+									pos_temp.desocupar();
+									return;		
+					)));
+					
+					-- ocupa posicao no tabuleiro com arqueiro branco
+					public ocupaTabBranco: Posicao ==> ()
+						ocupaTabBranco(pos) == (
+								for all pos_temp in set tabuleiro do (
+									if(pos_temp = pos) then (
+									pos_temp.ocuparEquipaBranco();
+									return;		
+					)));
+					
+					
+					-- ocupa posicao no tabuleiro com arqueiro branco
+					public ocupaTabPreto: Posicao ==> ()
+						ocupaTabPreto(pos) == (
+								for all pos_temp in set tabuleiro do (
+									if(pos_temp = pos) then (
+									pos_temp.ocuparEquipaPreto();
+									return;		
+					)));
 		
 functions
 -- TODO Define functiones here
