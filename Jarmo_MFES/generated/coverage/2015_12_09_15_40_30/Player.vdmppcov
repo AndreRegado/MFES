@@ -60,7 +60,6 @@ operations
 				for all arq in set arqueiros do
 					if(arq.posicao = pos) then (
 						arq.matar();
-						desocupaPos(arq);
 						return)
 			);
 			
@@ -120,16 +119,6 @@ operations
 					if (s = arq) then
 						s.posicao.ocuparEquipaPreto();
 		));
-		
-			-- repor jogador morto
-			public reporArqueiroMorto : () ==> ()
-				reporArqueiroMorto() == (
-					for all arqueiro in set arqueiros do (
-						if(arqueiro.vivo = <False>) then ( 
-							
-						);
-					);
-				);
 			
 			
 functions

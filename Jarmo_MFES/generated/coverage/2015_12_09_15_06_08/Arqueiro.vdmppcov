@@ -14,7 +14,6 @@ operations
 
 		public Arqueiro : Posicao ==> Arqueiro
 			Arqueiro(Posicao) == (posicao := Posicao;);
-			
 		public SetPosicao: Posicao ==> () 
 			SetPosicao(Posicao) == ( posicao := Posicao;); 
 		

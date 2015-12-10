@@ -36,20 +36,20 @@ operations
 	public contaPontos: () ==> nat
 		contaPontos() == (
 			dcl pontos: nat:=0;
-			-- Se jogador branco entao valem 2 pontos os arqueiros que estiverem na posicao y=4
+			-- Se jogador branco entao valem 2 pontos os arqueiros que estiverem na posicao y=5
 			if(cor = <Branco>) then (
 				for all arqueiro in set arqueiros do (
-				if (arqueiro.posicao.getY() = 4 and arqueiro.vivo = <True>) then
+				if (arqueiro.posicao.getY() = 5 and arqueiro.vivo = <True>) then
 						pontos := pontos + 2
-				else if(arqueiro.vivo = <True>) then
-						pontos := pontos + 1;))
+				else(
+						pontos := pontos + 1;)))
 			-- Se jogador preto entao valem 2 pontos os arqueiros que estiverem na posicao y=0
 			else (
 				for all arqueiro in set arqueiros do (
 				if (arqueiro.posicao.getY() = 0 and arqueiro.vivo = <True>) then
 						pontos := pontos + 2
-				else if (arqueiro.vivo = <True>) then
-						pontos := pontos + 1;));
+				else(
+						pontos := pontos + 1;)));
 			return pontos;
 		
 		);
@@ -60,7 +60,6 @@ operations
 				for all arq in set arqueiros do
 					if(arq.posicao = pos) then (
 						arq.matar();
-						desocupaPos(arq);
 						return)
 			);
 			
@@ -120,16 +119,6 @@ operations
 					if (s = arq) then
 						s.posicao.ocuparEquipaPreto();
 		));
-		
-			-- repor jogador morto
-			public reporArqueiroMorto : () ==> ()
-				reporArqueiroMorto() == (
-					for all arqueiro in set arqueiros do (
-						if(arqueiro.vivo = <False>) then ( 
-							
-						);
-					);
-				);
 			
 			
 functions

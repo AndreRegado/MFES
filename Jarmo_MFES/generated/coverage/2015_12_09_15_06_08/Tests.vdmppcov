@@ -3,33 +3,22 @@ class Tests
 		public AssertTrue : bool ==> ()
 		AssertTrue(a) == return 
             pre a;
-		
-		public TestAll : () ==> ()
-		TestAll() ==
-		(
-			Tests1();
-			--Tests_inicia_board(); --ta malllllll
-			Tests_muda_turno();
-			Tests_mata_arq_pos();
-			Tests_gameOver();
-		);
-		
-		
+
 		public Tests1 : () ==> ()
 		Tests1() == 
-      ( 	
-      		dcl	p1: Posicao:=new Posicao(1,0,0);
-          dcl arq: Arqueiro := new Arqueiro(p1);
-          AssertTrue(p1.getX() = 1);
-						AssertTrue(p1.getY() = 0);
-           	p1.SetX(5);
-           	AssertTrue(p1.getX() = 5);
-          	p1.SetY(9);
-          	AssertTrue(p1.getY() = 9);
-          	AssertTrue(arq.getVivo() = <True>);
-          	arq.matar();
-          	AssertTrue(arq.getVivo() = <False>);
-      );
+            ( 	
+            		dcl	p1: Posicao:=new Posicao(1,0,0);
+                dcl arq: Arqueiro := new Arqueiro(p1);
+                AssertTrue(p1.getX() = 1);
+									AssertTrue(p1.getY() = 0);
+                 	p1.SetX(5);
+                 	AssertTrue(p1.getX() = 5);
+                	p1.SetY(9);
+                	AssertTrue(p1.getY() = 9);
+                	AssertTrue(arq.getVivo() = <True>);
+                	arq.matar();
+                	AssertTrue(arq.getVivo() = <False>);
+            );
             
     public Tests_inicia_board : () ==> ()
 		Tests_inicia_board() == 
@@ -37,7 +26,6 @@ class Tests
             		dcl	j_1: Jarmo:=new Jarmo();
             		dcl p1: Posicao := new Posicao(0,0,1);
    							dcl a1: Arqueiro := new Arqueiro(p1);
-   	
    							dcl arq_movido: Arqueiro;
    							dcl p12: Posicao := new Posicao(1,2,0);
    							
@@ -57,7 +45,7 @@ class Tests
               	AssertTrue(arq_movido <> arq_mov_comp);
             );
             
-    -- teste muda turno. Jogador inicial é <Branco> e deve passar a <Preto>
+        -- teste muda turno. Jogador inicial é <Branco> e deve passar a <Preto>
     public Tests_muda_turno : () ==> ()
 		Tests_muda_turno() == (
 					dcl	j_1: Jarmo:=new Jarmo();
@@ -66,7 +54,7 @@ class Tests
 					AssertTrue(j_1.jogadorAtual.cor = <Preto>));
 					
 		-- teste matar um arqueiro por posicao
-		public Tests_mata_arq_pos: () ==> ()
+		   public Tests_mata_arq_pos: () ==> ()
 		Tests_mata_arq_pos() == (
 					-- para criar um jogador
 					dcl p1: Posicao := new Posicao(0,0,1);
@@ -83,7 +71,7 @@ class Tests
 					AssertTrue(pl1.arqueiroPorPosicao(p1).vivo = <False>));
 					
 		-- teste gameOver
-		public Tests_gameOver: () ==> ()
+		   public Tests_gameOver: () ==> ()
 		Tests_gameOver() == (
 		-- Quinta linha
 		dcl p21: Posicao := new Posicao(0,4,1);
@@ -109,7 +97,8 @@ class Tests
 					
 					AssertTrue(j_1.gameOver() = true);
 					);
-
+	
+		
 
 
 end Tests

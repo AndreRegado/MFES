@@ -153,7 +153,7 @@ operations
 							-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 							arq_a_mover.marcar();
 							jogadorAdversario.mataArqueiro(pos_nova);
-							desocupaTab(pos_nova);
+							pdf banana   	desocupaTab(pos_nova);
 							
 							-- Se matou e chegou à ultima posicao entao pode recuperar um morto
 							if (jogadorAtual.cor = <Branco>) then 

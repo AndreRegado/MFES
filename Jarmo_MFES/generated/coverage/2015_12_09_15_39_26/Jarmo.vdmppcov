@@ -153,7 +153,6 @@ operations
 							-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 							arq_a_mover.marcar();
 							jogadorAdversario.mataArqueiro(pos_nova);
-							desocupaTab(pos_nova);
 							
 							-- Se matou e chegou à ultima posicao entao pode recuperar um morto
 							if (jogadorAtual.cor = <Branco>) then 
@@ -200,7 +199,7 @@ operations
 
 					--)
 					pre
-					(not gameOver() and
+					---(not gameOver() and
 					-- arqueiro a mover esta no set de arqueiros do jogadoratual, está vivo,
 					-- não está na ultima posicao e a posicao nova faz parte das posicoes adjacentes
 					-- à peça onde está agora
@@ -218,7 +217,7 @@ operations
 					and (arq_a_mover.vivo = <True>)
 					and arq_a_mover.posicao.getY() <> 0 
 					and pos_nova in set arq_a_mover.posicao.adjacentes
-					))));
+					)));
 				
 		
 	
@@ -264,8 +263,6 @@ operations
 									pos_temp.ocuparEquipaPreto();
 									return;		
 					)));
-					
-				
 		
 functions
 -- TODO Define functiones here
