@@ -9,8 +9,8 @@ values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-private X: nat;
-private Y: nat;
+public X: nat;
+public Y: nat;
 public ocupado : nat;
 public adjacentes : set of Posicao;
 operations	

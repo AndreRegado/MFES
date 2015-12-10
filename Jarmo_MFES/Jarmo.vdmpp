@@ -163,7 +163,7 @@ operations
 									recupera_jog := true;)
 							);
 							
-						-- desocupar posicao antiga e (assumir nova)
+						-- desocupar posicao antiga 
 						jogadorAtual.desocupaPos(arq_a_mover);
 						-- desocupa no tabuleiro
 						desocupaTab(arq_a_mover.posicao);

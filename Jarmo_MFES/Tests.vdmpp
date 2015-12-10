@@ -115,11 +115,12 @@ class Tests
             		dcl p2: Posicao := new Posicao(0,0,0);
             		dcl p3: Posicao;
    							dcl a1: Arqueiro := new Arqueiro(p1);
+   							dcl a2: Arqueiro := new Arqueiro(p2);
             	
             		j_1.jogadorAtual.desocupaPos(a1);
-   							p3 := j_1.tabPos(p2);
+   							p3 := j_1.jogadorAtual.posicaoPorArqueiro(a2);
        					
-            		AssertTrue(p3.getX() = p2.getX() and p3.getY() = p2.getY() and p3.ocupado = p2.ocupado);
+            		AssertTrue(p3.getX() = 0  and p3.getY() = 0 and p3.ocupado = 0);
             );
             
             -- ocupar posicao atraves de arqueiro

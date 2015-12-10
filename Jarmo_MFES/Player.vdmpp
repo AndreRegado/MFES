@@ -83,6 +83,29 @@ operations
 						
 						return arqe;
 				);
+		
+		-- retorna posiçao onde está um arqueiro		
+		public posicaoPorArqueiro: Arqueiro ==> Posicao
+				posicaoPorArqueiro(arq_in) == (
+						dcl ret_pos: Posicao;
+						dcl x: nat;
+						dcl y: nat;
+						dcl ocupado: nat;
+						for all arq in set arqueiros do 
+						if (arq.vivo = arq_in.vivo 
+						and arq.marcado = arq_in.marcado
+						and arq.posicao.getX() = arq_in.posicao.getX()
+						and arq.posicao.getY() = arq_in.posicao.getY()
+						and arq.posicao.getOcupado() = arq_in.posicao.getOcupado()) then (
+							x := arq.posicao.getX();
+							y := arq.posicao.getY();
+							ocupado := arq.posicao.getOcupado();
+							ret_pos.X := x;
+							ret_pos.Y := y;
+							ret_pos.ocupado := ocupado;
+						);
+						return ret_pos;
+				);
 				
 		-- define set de arqueiros (para testes)
 		public setArqueiros: set of Arqueiro ==> ()
