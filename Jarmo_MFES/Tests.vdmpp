@@ -43,6 +43,7 @@ class Tests
    							
    							dcl p_nova: Posicao := new Posicao (1,2,1);
    							dcl arq_mov_comp: Arqueiro := new Arqueiro(p_nova);
+   							
    							--Jogada de teste com 1º arqueiro de <Branco> para (1,2)
    							j_1.jogada(a1,p12);
    							
@@ -55,6 +56,19 @@ class Tests
               	
               	-- Testa se arqueiro movido tem as caracteristicas corretas
               	AssertTrue(arq_movido <> arq_mov_comp);
+            );
+            
+            public Tests_marca_arqueiro : () ==> ()
+						Tests_marca_arqueiro() == 
+            ( 	
+            		dcl	j_1: Jarmo:=new Jarmo();
+            		dcl p1: Posicao := new Posicao(0,0,1);
+   							dcl a1: Arqueiro := new Arqueiro(p1);
+   	
+   							j_1.jogadorAtual.marcaArqueiro(a1.posicao);
+   							
+   							-- Troca jogador atual
+               	AssertTrue(j_1.jogadorAtual.arqueiroPorPosicao(p1).marcado = <True>);
             );
             
     -- teste muda turno. Jogador inicial é <Branco> e deve passar a <Preto>

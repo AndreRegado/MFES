@@ -122,14 +122,14 @@ operations
 		));
 		
 			-- repor jogador morto
-			public reporArqueiroMorto : () ==> ()
-				reporArqueiroMorto() == (
-					for all arqueiro in set arqueiros do (
-						if(arqueiro.vivo = <False>) then ( 
+			--public reporArqueiroMorto : () ==> ()
+				--reporArqueiroMorto() == (
+				--	for all arqueiro in set arqueiros do (
+				--		if(arqueiro.vivo = <False>) then ( 
 							
-						);
-					);
-				);
+				--		);
+				--	);
+				--);
 			
 			
 functions

@@ -146,7 +146,6 @@ operations
 					jogada(arq_a_mover, pos_nova) == (
 				
 						-- Escolher jogador a recuperar se for o caso
-						-- !!!!!!!tem que ser feito no jogador diretamente!!!!!!!!
 						if(verifica_pos(pos_nova)) then (
 							
 							jogadorAtual.marcaArqueiro(arq_a_mover.posicao);
