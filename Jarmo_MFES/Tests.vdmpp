@@ -106,7 +106,37 @@ class Tests
                	AssertTrue(p3.getX() = p2.getX() and p3.getY() = p2.getY() and p3.ocupado = p2.ocupado);
             );
             
+            -- desocupar posicao atraves de arqueiro
+            public Tests_desocupaPos_Arqueiro: () ==> ()
+            Tests_desocupaPos_Arqueiro() == 
+            (
+            		dcl	j_1: Jarmo:=new Jarmo();
+            		dcl p1: Posicao := new Posicao(0,0,1);
+            		dcl p2: Posicao := new Posicao(0,0,0);
+            		dcl p3: Posicao;
+   							dcl a1: Arqueiro := new Arqueiro(p1);
+            	
+            		j_1.jogadorAtual.desocupaPos(a1);
+   							p3 := j_1.tabPos(p2);
+       					
+            		AssertTrue(p3.getX() = p2.getX() and p3.getY() = p2.getY() and p3.ocupado = p2.ocupado);
+            );
             
+            -- ocupar posicao atraves de arqueiro
+            public Tests_novaPos: () ==> ()
+            Tests_novaPos() == 
+            (
+            		dcl	j_1: Jarmo:=new Jarmo();
+            		dcl p1: Posicao := new Posicao(0,0,1);
+            		dcl p8: Posicao := new Posicao(2,1,0);
+            		dcl p2: Posicao;
+   							dcl a1: Arqueiro := new Arqueiro(p1);
+            	
+            		j_1.jogadorAtual.novaPos(a1,p8);
+   							p2 := j_1.tabPos(p8);
+       					
+            		AssertTrue(p2.getX() = p8.getX() and p2.getY() = p8.getY() and p2.ocupado = p8.ocupado);
+            );
             
     -- teste muda turno. Jogador inicial é <Branco> e deve passar a <Preto>
     public Tests_muda_turno : () ==> ()

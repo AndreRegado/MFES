@@ -95,7 +95,7 @@ operations
 		public desocupaPos: Arqueiro ==> ()
 				desocupaPos(arq) == (
 				for all s in set arqueiros do (
-					if (s = arq) then
+					if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then
 						s.posicao.desocupar();
 		));
 		
