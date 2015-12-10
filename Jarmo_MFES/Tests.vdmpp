@@ -58,6 +58,8 @@ class Tests
               	AssertTrue(arq_movido <> arq_mov_comp);
             );
             
+            -- verifica se arqueiro é marcado depois de matar outro
+            
             public Tests_marca_arqueiro : () ==> ()
 						Tests_marca_arqueiro() == 
             ( 	
@@ -71,32 +73,38 @@ class Tests
                	AssertTrue(a1.marcado = <True>);
             );
             
+            -- verifica se arqueiro morre
             public Tests_mata_arqueiro : () ==> ()
 						Tests_mata_arqueiro() == 
             ( 	
             		dcl	j_1: Jarmo:=new Jarmo();
             		dcl p1: Posicao := new Posicao(0,0,1);
    							dcl a1: Arqueiro := new Arqueiro(p1);
+   							
+   							
+   							dcl p2: Posicao := new Posicao(0,0,0);
    	
    							j_1.jogadorAtual.mataArqueiro(p1);
-   							a1 := j_1.jogadorAtual.arqueiroPorPosicao(p1);
+   							a1 := j_1.jogadorAtual.arqueiroPorPosicao(p2);
    							
    							-- Troca jogador atual
                	AssertTrue(a1.vivo = <False>);
             );
             
-          --  public Tests_desocupa_tab : () ==> ()
-				--	Tests_desocupa_tab() == 
-         --   ( 	
-           -- 		dcl	j_1: Jarmo:=new Jarmo();
-          --  		dcl p1: Posicao := new Posicao(0,0,1);
-   	
-   				--			j_1.tabulerio.
-   				--			a1 := j_1.jogadorAtual.arqueiroPorPosicao(p1);
+            -- verifica se posicao do tabuleiro é desocupada
+            public Tests_desocupa_tab : () ==> ()
+				Tests_desocupa_tab() == 
+            ( 	
+            		dcl	j_1: Jarmo:=new Jarmo();
+            		dcl p1: Posicao := new Posicao(0,0,1);
+            		dcl p2: Posicao := new Posicao(0,0,0);
+   							dcl p3: Posicao;
    							
+   							j_1.desocupaTab(p1);
+   							p3 := j_1.tabPos(p2);
    							-- Troca jogador atual
-           --    	AssertTrue(a1.vivo = <False>);
-          --  );
+               	AssertTrue(p3.getX() = p2.getX() and p3.getY() = p2.getY() and p3.ocupado = p2.ocupado);
+            );
             
             
             

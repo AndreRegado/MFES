@@ -152,22 +152,26 @@ operations
 							-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 							arq_a_mover.marcar();
 							jogadorAdversario.mataArqueiro(pos_nova);
-							desocupaTab(pos_nova);
+							--desocupaTab(pos_nova);
 							
 							-- Se matou e chegou à ultima posicao entao pode recuperar um morto
 							if (jogadorAtual.cor = <Branco>) then 
-								 (if(pos_nova.getY() = 5) then
+								 (if(pos_nova.getY() = 4) then
 									recupera_jog := true;)
 							else
 								 (if(pos_nova.getY() = 0) then
 									recupera_jog := true;)
 							);
+							
 						-- desocupar posicao antiga e assumir nova
 						jogadorAtual.desocupaPos(arq_a_mover);
 						-- desocupa no tabuleiro
 						desocupaTab(arq_a_mover.posicao);
+						
 						-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 						arq_a_mover.posicao.desocupar();
+						
+						-- ver se muda tudo
 						jogadorAtual.novaPos(arq_a_mover, pos_nova);
 						
 				
@@ -225,13 +229,7 @@ operations
 					-- Falta Repor jogador morto
 					-- Testar 
 									-- jogadorAtual.desocupaPos(arq_a_mover);
-									-- desocupaTab(arq_a_mover.posicao);
-									-- arq_a_mover.posicao.desocupar();
 									-- jogadorAtual.novaPos(arq_a_mover, pos_nova);
-									-- ocupaTabBranco(arq_a_mover.posicao);
-								  -- jogadorAtual.ocupaPosBranco(arq_a_mover);
-								  -- ocupaTabPreto(arq_a_mover.posicao);
-								  -- jogadorAtual.ocupaPosPreto(arq_a_mover);
 								  -- jogada
 					
 					-- retorna posicao do tabuleiro igual a parametro
@@ -249,7 +247,7 @@ operations
 					public desocupaTab: Posicao ==> ()
 						desocupaTab(pos) == (
 								for all pos_temp in set tabuleiro do (
-									if(pos_temp = pos) then (
+									if(pos_temp.getX() = pos.getX() and pos_temp.getY() = pos.getY()) then (
 									pos_temp.desocupar();
 									return;		
 					)));
