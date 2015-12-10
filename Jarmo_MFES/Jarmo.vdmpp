@@ -234,7 +234,16 @@ operations
 								  -- jogadorAtual.ocupaPosPreto(arq_a_mover);
 								  -- jogada
 					
-					
+					-- retorna posicao do tabuleiro igual a parametro
+					public tabPos: Posicao ==> Posicao
+						tabPos(pos) == (
+						dcl ret_pos: Posicao;
+								for all pos_temp in set tabuleiro do
+									if(pos_temp.getX() = pos.getX() and pos_temp.getY() = pos.getY() and pos_temp.ocupado = pos.ocupado) then
+									ret_pos := pos_temp;
+								
+						return ret_pos;		
+					);
 					
 					-- desocupa posicao pos no tabuleiro
 					public desocupaTab: Posicao ==> ()

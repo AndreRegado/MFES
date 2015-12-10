@@ -13,7 +13,9 @@ public marcado : Marcado := <False>;
 operations
 
 		public Arqueiro : Posicao ==> Arqueiro
-			Arqueiro(Posicao) == (posicao := Posicao;);
+			Arqueiro(Posicao) == (posicao := Posicao;
+			vivo := <True>;
+			marcado := <False>);
 			
 		public SetPosicao: Posicao ==> () 
 			SetPosicao(Posicao) == ( posicao := Posicao;); 

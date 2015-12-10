@@ -58,7 +58,7 @@ operations
 		public mataArqueiro: Posicao ==> ()
 			mataArqueiro(pos) == (
 				for all arq in set arqueiros do
-					if(arq.posicao = pos) then (
+					if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY() and arq.posicao.ocupado = pos.ocupado) then (
 						arq.matar();
 						desocupaPos(arq);
 						return)
@@ -68,7 +68,7 @@ operations
 			public marcaArqueiro: Posicao ==> ()
 			marcaArqueiro(pos) == (
 				for all arq in set arqueiros do
-					if(arq.posicao = pos) then (
+					if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY() and arq.posicao.ocupado = pos.ocupado) then (
 						arq.marcar();
 						return)
 			);
@@ -76,9 +76,12 @@ operations
 		-- retorna arqueiro por posicao
 		public arqueiroPorPosicao: Posicao ==> Arqueiro
 				arqueiroPorPosicao(pos) == (
-						dcl arq: Arqueiro;
-						arq := iota x in set arqueiros & x.posicao = pos;
-						return arq;
+						dcl arqe: Arqueiro;
+						for all arq in set arqueiros do 
+						if (arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY() and arq.posicao.ocupado = pos.ocupado) then
+						arqe:= arq;
+						
+						return arqe;
 				);
 				
 		-- define set de arqueiros (para testes)

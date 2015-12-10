@@ -66,10 +66,39 @@ class Tests
    							dcl a1: Arqueiro := new Arqueiro(p1);
    	
    							j_1.jogadorAtual.marcaArqueiro(a1.posicao);
+   							a1 := j_1.jogadorAtual.arqueiroPorPosicao(p1);
+   							-- Troca jogador atual
+               	AssertTrue(a1.marcado = <True>);
+            );
+            
+            public Tests_mata_arqueiro : () ==> ()
+						Tests_mata_arqueiro() == 
+            ( 	
+            		dcl	j_1: Jarmo:=new Jarmo();
+            		dcl p1: Posicao := new Posicao(0,0,1);
+   							dcl a1: Arqueiro := new Arqueiro(p1);
+   	
+   							j_1.jogadorAtual.mataArqueiro(p1);
+   							a1 := j_1.jogadorAtual.arqueiroPorPosicao(p1);
    							
    							-- Troca jogador atual
-               	AssertTrue(j_1.jogadorAtual.arqueiroPorPosicao(p1).marcado = <True>);
+               	AssertTrue(a1.vivo = <False>);
             );
+            
+          --  public Tests_desocupa_tab : () ==> ()
+				--	Tests_desocupa_tab() == 
+         --   ( 	
+           -- 		dcl	j_1: Jarmo:=new Jarmo();
+          --  		dcl p1: Posicao := new Posicao(0,0,1);
+   	
+   				--			j_1.tabulerio.
+   				--			a1 := j_1.jogadorAtual.arqueiroPorPosicao(p1);
+   							
+   							-- Troca jogador atual
+           --    	AssertTrue(a1.vivo = <False>);
+          --  );
+            
+            
             
     -- teste muda turno. Jogador inicial é <Branco> e deve passar a <Preto>
     public Tests_muda_turno : () ==> ()
