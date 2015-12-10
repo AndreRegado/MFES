@@ -227,10 +227,8 @@ operations
 	
 					-- Falta contar pontos
 					-- Falta Repor jogador morto
-					-- Testar 
-									-- jogadorAtual.desocupaPos(arq_a_mover);
-									-- jogadorAtual.novaPos(arq_a_mover, pos_nova);
-								  -- jogada
+					-- escolher posicao adjacente sem ter amigo
+					-- escolher arqueiro a mover
 					
 					-- retorna posicao do tabuleiro igual a parametro
 					public tabPos: Posicao ==> Posicao

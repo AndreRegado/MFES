@@ -129,14 +129,19 @@ class Tests
             (
             		dcl	j_1: Jarmo:=new Jarmo();
             		dcl p1: Posicao := new Posicao(0,0,1);
-            		dcl p8: Posicao := new Posicao(2,1,0);
-            		dcl p2: Posicao;
+            		dcl p8: Posicao := new Posicao(1,2,0);
+            		dcl p9: Posicao := new Posicao(1,2,1);
+            		
    							dcl a1: Arqueiro := new Arqueiro(p1);
+   							dcl a2: Arqueiro := new Arqueiro(p9);
+   							dcl arq : Arqueiro;
             	
             		j_1.jogadorAtual.novaPos(a1,p8);
-   							p2 := j_1.tabPos(p8);
+   							arq := 	j_1.jogadorAtual.arqueiroPorPosicao(p9);
        					
-            		AssertTrue(p2.getX() = p8.getX() and p2.getY() = p8.getY() and p2.ocupado = p8.ocupado);
+            		AssertTrue(arq.vivo = a2.vivo and arq.marcado = a2.marcado and arq.posicao.getX() = a2.posicao.getX()
+						and arq.posicao.getY() = a2.posicao.getY()
+						and arq.posicao.getOcupado() = a2.posicao.getOcupado());
             );
             
     -- teste muda turno. Jogador inicial é <Branco> e deve passar a <Preto>
