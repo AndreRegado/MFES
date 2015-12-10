@@ -87,7 +87,7 @@ operations
 		-- retorna posiçao onde está um arqueiro		
 		public posicaoPorArqueiro: Arqueiro ==> Posicao
 				posicaoPorArqueiro(arq_in) == (
-						dcl ret_pos: Posicao;
+						dcl ret_pos: Posicao := new Posicao(0,0,0);
 						dcl x: nat;
 						dcl y: nat;
 						dcl ocupado: nat;
