@@ -119,6 +119,8 @@ operations
 				
 		
 	 -- game over : quando termina o jogo
+	 -- falta ver arqueiros do adversario
+	 
 	pure public gameOver: () ==> bool
 			gameOver() == (
 				dcl res: bool := true;

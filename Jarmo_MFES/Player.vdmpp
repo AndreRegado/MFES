@@ -159,6 +159,7 @@ operations
 		));
 		
 		-- funçao que recebe um arqueiro e escolhe uma posiçao adjacente aleatoria!
+		-- nao está aleatoria, usa primeira posicao que aparece. precisa funcao da biblioteca math
 		public JogadaAleatoria : Arqueiro ==> Posicao
 			JogadaAleatoria(arq) == (
 				dcl pos: Posicao := new Posicao(0,0,0);
@@ -198,6 +199,7 @@ operations
 			);
 			
 			-- verifica se têm algum jogador morto e repo-lo no tabuleiro
+			-- falta atualizar diretamente no arqueiro
 			public reporArqueiroMorto : () ==> Posicao
 				reporArqueiroMorto() == (
 					dcl pos_ret : Posicao := new Posicao (0,0,0);
