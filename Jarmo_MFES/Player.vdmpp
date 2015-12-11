@@ -5,6 +5,7 @@ types
 instance variables
 public cor: Cor;
 public arqueiros : set of Arqueiro;
+public posicoes : set of Posicao;
 
 operations
 	public Player: Cor * Posicao * Posicao * Posicao * Posicao * Posicao ==> Player
@@ -147,15 +148,92 @@ operations
 						s.posicao.ocuparEquipaPreto();
 		));
 		
-			-- repor jogador morto
-			--public reporArqueiroMorto : () ==> ()
-				--reporArqueiroMorto() == (
-				--	for all arqueiro in set arqueiros do (
-				--		if(arqueiro.vivo = <False>) then ( 
-							
-				--		);
-				--	);
-				--);
+		-- funçao que recebe um arqueiro e escolhe uma posiçao adjacente aleatoria!
+		public JogadaAleatoria : Arqueiro ==> Posicao
+			JogadaAleatoria(arq) == (
+				dcl pos: Posicao := new Posicao(0,0,0);
+				dcl x: nat;
+				dcl y: nat;
+				dcl ocupado: nat;
+				for all s in set arqueiros do (
+					if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then (
+							posicoes := s.posicao.getAdjacentes();
+							for all p in set posicoes do (
+								if(cor = <Branco>) then (
+									if(p.getOcupado() = 2 or p.getOcupado() = 0) then (
+										x:=p.getX();
+										y:=p.getY();
+										ocupado:=p.getOcupado();
+										pos.X := x;
+										pos.Y := y;
+										pos.ocupado := ocupado;
+								  	return pos;
+									)	
+								)
+								else (
+									if(p.getOcupado() = 1 or p.getOcupado() = 0) then (
+										x:=p.getX();
+										y:=p.getY();
+										ocupado:=p.getOcupado();
+										pos.X := x;
+										pos.Y := y;
+										pos.ocupado := ocupado;
+								  	return pos;
+									)	
+								)
+							)
+					)
+				);
+				return pos;
+			);
+			
+			-- verifica se têm algum jogador morto e repo-lo no tabuleiro
+			public reporArqueiroMorto : () ==> Posicao
+				reporArqueiroMorto() == (
+					dcl pos_ret : Posicao := new Posicao (0,0,0);
+					dcl x: nat;
+					dcl y: nat;
+					dcl ocupado: nat;
+					for all arq in set arqueiros do (
+						if(arq.vivo = <False>) then ( 
+							posicoes := retornaPrimeiraLinha();
+							for all pos in set posicoes do (
+								if(pos.ocupado = 0) then (
+										x:=pos.getX();
+										y:=pos.getY();
+										ocupado:=pos.getOcupado();
+										pos_ret.X := x;
+										pos_ret.Y := y;
+										pos_ret.ocupado := ocupado;
+								  	return pos;
+								)									
+							)
+						)
+					);
+					return pos_ret;
+				);
+				
+		 public retornaPrimeiraLinha:  () ==> set of Posicao
+		 retornaPrimeiraLinha() == (
+		 		if(cor = <Branco>) then (
+		 			dcl p1: Posicao := new Posicao (0,0,0);
+		 			dcl p2: Posicao := new Posicao (1,0,0);
+		 			dcl p3: Posicao := new Posicao (2,0,0);
+		 			dcl p4: Posicao := new Posicao (3,0,0);
+		 			dcl p5: Posicao := new Posicao (4,0,0);
+		 			posicoes := {p1,p2,p3,p4,p5};
+		 			return posicoes;
+		 		)
+		 		else (
+		 			dcl p1: Posicao := new Posicao (0,4,0);
+		 			dcl p2: Posicao := new Posicao (1,4,0);
+		 			dcl p3: Posicao := new Posicao (2,4,0);
+		 			dcl p4: Posicao := new Posicao (3,4,0);
+		 			dcl p5: Posicao := new Posicao (4,4,0);
+		 			posicoes := {p1,p2,p3,p4,p5};
+		 		);
+		 		return posicoes;
+		 );
 			
 			
 functions

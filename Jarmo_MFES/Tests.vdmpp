@@ -139,6 +139,49 @@ class Tests
             		AssertTrue(p2.getX() = p8.getX() and p2.getY() = p8.getY() and p2.ocupado = p8.ocupado);
             );
             
+            public Tests_jogadaAleatoria: () ==> ()
+            Tests_jogadaAleatoria() ==
+            (
+            		dcl	j_1: Jarmo:=new Jarmo();
+            		dcl p1: Posicao := new Posicao(0,0,1);
+            		dcl p2: Posicao;
+   							dcl a1: Arqueiro := new Arqueiro(p1);
+            	
+            	
+            		p2 := j_1.jogadorAtual.JogadaAleatoria(a1);
+            		
+            		AssertTrue( (p2.getX() = 2 and p2.getY() = 1) or (p2.getX() = 1 and p2.getY() = 2));
+            );
+            
+            public Tests_reporArqueiroMorto: () ==> ()
+            Tests_reporArqueiroMorto() ==
+            (
+            	dcl pos : Posicao := new Posicao(0,0,0);
+            	
+            	dcl p21: Posicao := new Posicao(0,4,1);
+							dcl p22: Posicao := new Posicao(1,2,1);
+							dcl p23: Posicao := new Posicao(0,0,0);
+							dcl p24: Posicao := new Posicao(3,2,1);
+							dcl p25: Posicao := new Posicao(4,4,1);
+							
+							dcl a1: Arqueiro := new Arqueiro(p21);
+							dcl a2: Arqueiro := new Arqueiro(p22);
+							dcl a3: Arqueiro := new Arqueiro(p23);
+							dcl a4: Arqueiro := new Arqueiro(p24);
+							dcl a5: Arqueiro := new Arqueiro(p25);
+							
+							dcl arqueiros: set of Arqueiro := {a1,a2,a3,a4,a5};
+							
+         	   	dcl	j_1: Jarmo:=new Jarmo();
+         	   	
+         	   	j_1.jogadorAtual.setArqueiros(arqueiros);
+         	   	--mata o arqueiro a1
+         	   	j_1.jogadorAtual.mataArqueiro(p21);
+        			pos := j_1.jogadorAtual.reporArqueiroMorto();
+        			
+        			AssertTrue(pos.getY() = 0 and (pos.getX() = 0 or pos.getX() = 1 or pos.getX() = 2 or pos.getX() = 3 or pos.getX() = 4));
+            );
+            
     -- teste muda turno. Jogador inicial é <Branco> e deve passar a <Preto>
     public Tests_muda_turno : () ==> ()
 		Tests_muda_turno() == (
@@ -191,6 +234,32 @@ class Tests
 					
 					AssertTrue(j_1.gameOver() = true);
 					);
+					
+		public Tests_Pontos :() ==> ()
+			Tests_Pontos() == (
+				dcl pontos : nat;
+				-- Quinta linha
+				dcl p21: Posicao := new Posicao(0,4,1);
+				dcl p22: Posicao := new Posicao(1,2,1);
+				dcl p23: Posicao := new Posicao(2,4,1);
+				dcl p24: Posicao := new Posicao(3,2,1);
+				dcl p25: Posicao := new Posicao(4,4,1);
+				
+				dcl a1: Arqueiro := new Arqueiro(p21);
+				dcl a2: Arqueiro := new Arqueiro(p22);
+				dcl a3: Arqueiro := new Arqueiro(p23);
+				dcl a4: Arqueiro := new Arqueiro(p24);
+				dcl a5: Arqueiro := new Arqueiro(p25);
+				
+				-- arqueiros do jogador branco nas posicoes de fim do jogo
+				dcl arqueiros: set of Arqueiro := {a1,a2,a3,a4,a5};
+				
+				dcl	j_1: Jarmo:=new Jarmo();
+				j_1.jogadorAtual.setArqueiros(arqueiros);
+				pontos := j_1.jogadorAtual.contaPontos();
+				
+				AssertTrue(pontos=8);
+			)
 
 
 

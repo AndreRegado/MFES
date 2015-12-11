@@ -36,6 +36,9 @@ public SetY : nat ==> ()
 
 public setAdjacentes: set of Posicao ==> ()
 	setAdjacentes(adj) == (adjacentes := adj);
+	
+public getAdjacentes: () ==> set of Posicao
+	getAdjacentes() == return adjacentes;
 			 
 pure public getOcupado: () ==> nat
 	getOcupado() == return ocupado;
