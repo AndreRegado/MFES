@@ -157,12 +157,12 @@ operations
 					if (s = arq) then
 						s.posicao.ocuparEquipaPreto();
 		));
-		
+			
 		-- funçao que recebe um arqueiro e escolhe uma posiçao adjacente aleatoria!
 		-- nao está aleatoria, usa primeira posicao que aparece. precisa funcao da biblioteca math
 		public JogadaAleatoria : Arqueiro ==> Posicao
 			JogadaAleatoria(arq) == (
-				dcl pos: Posicao := new Posicao(0,0,0);
+				dcl pos: Posicao := new Posicao(5,5,0);
 				dcl x: nat;
 				dcl y: nat;
 				dcl ocupado: nat;
@@ -199,10 +199,9 @@ operations
 			);
 			
 			-- verifica se têm algum jogador morto e repo-lo no tabuleiro
-			-- falta atualizar diretamente no arqueiro
-			public reporArqueiroMorto : () ==> Posicao
+			-- falta atualizar diretamente no arqueiro -> ACHO Q JA TA
+			public reporArqueiroMorto : () ==> ()
 				reporArqueiroMorto() == (
-					dcl pos_ret : Posicao := new Posicao (0,0,0);
 					dcl x: nat;
 					dcl y: nat;
 					dcl ocupado: nat;
@@ -214,15 +213,18 @@ operations
 										x:=pos.getX();
 										y:=pos.getY();
 										ocupado:=pos.getOcupado();
-										pos_ret.X := x;
-										pos_ret.Y := y;
-										pos_ret.ocupado := ocupado;
-								  	return pos;
+										--alterar no arq
+										arq.posicao.SetX(x);
+										arq.posicao.SetY(y);
+										if(cor = <Branco>) then (
+											arq.posicao.ocuparEquipaBranco();)
+										else (
+											arq.posicao.ocuparEquipaPreto();									
+								  	);
 								)									
 							)
 						)
 					);
-					return pos_ret;
 				);
 				
 		 public retornaPrimeiraLinha:  () ==> set of Posicao

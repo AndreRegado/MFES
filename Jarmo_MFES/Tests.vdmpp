@@ -186,7 +186,9 @@ class Tests
          	   	j_1.jogadorAtual.setArqueiros(arqueiros);
          	   	--mata o arqueiro a1
          	   	j_1.jogadorAtual.mataArqueiro(p21);
-        			pos := j_1.jogadorAtual.reporArqueiroMorto();
+        			j_1.jogadorAtual.reporArqueiroMorto();
+        			
+        			pos := j_1.jogadorAtual.posicaoPorArqueiro(a1);
         			
         			AssertTrue(pos.getY() = 0 and (pos.getX() = 0 or pos.getX() = 1 or pos.getX() = 2 or pos.getX() = 3 or pos.getX() = 4));
             );
@@ -268,8 +270,24 @@ class Tests
 				pontos := j_1.jogadorAtual.contaPontos();
 				
 				AssertTrue(pontos=8);
+			);
+			
+		public Tests_Jogada : () ==> ()
+			Tests_Jogada() == (
+				dcl pos1 : Posicao := new Posicao(0,0,0);
+				dcl	j_1: Jarmo:=new Jarmo();
+				dcl pos : Posicao := new Posicao(0,0,1);
+				dcl pos_nova: Posicao := new Posicao(2,1,0);
+				dcl a1: Arqueiro := new Arqueiro(pos);
+				
+				j_1.jogada(a1,pos_nova);
+				
+				-- Troca jogador atual
+        AssertTrue(j_1.jogadorAtual.cor = <Preto>);
+				
+				pos1 := j_1.jogadorAdversario.posicaoPorArqueiro(a1);
+				
+				AssertTrue(pos1.getX() = 2 and pos1.getY() = 1);
 			)
-
-
 
 end Tests

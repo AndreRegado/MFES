@@ -140,20 +140,38 @@ operations
 					verifica_pos(posicao) == (
 						return posicao.getOcupado() <> 0
 					);
+
 					
 				
 				-- pos_nova nao pode estar ocupada por amigo
-				-- 
-				
+
+			--verifica com o que a posiçao esta ocupada
+			public verifica_posicao: Posicao ==> nat
+				verifica_posicao(pos) == (
+					return pos.getOcupado();
+				);
+									
+				-- Adicionar parametros jogador e nova pos para teste
+
 				public jogada: Arqueiro * Posicao ==> ()
 					jogada(arq_a_mover, pos_nova) == (
-				
-						-- Escolher jogador a recuperar se for o caso
+															
+						--cancelar o move ou nao deixar fazer o move se a posicao for ocupado por um arqueiro da mesma team
+						if (jogadorAtual.cor = <Branco>) then (
+							if(verifica_posicao(pos_nova) = 1) then (
+								return;))
+						else (
+							if(verifica_posicao(pos_nova) = 2) then (
+								return; )
+						);
+											
+						-- Escolher jogador a recuperar se for o caso --A posiçao nova tem um arqueiro inimigo
 						if(verifica_pos(pos_nova)) then (
 							jogadorAtual.marcaArqueiro(arq_a_mover.posicao);
 							-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 							arq_a_mover.marcar();
 							jogadorAdversario.mataArqueiro(pos_nova);
+
 							--desocupaTab(pos_nova);
 							);
 							-- Se matou e chegou à ultima posicao entao pode recuperar um morto
@@ -164,6 +182,10 @@ operations
 							else
 								 (if(pos_nova.getY() = 0) then
 									recupera_jog := true;));
+													
+							-- Se matou e chegou à ultima posicao entao pode recuperar um morto -> retorna a posicao onde tem que colocar o arqueiro morto
+							jogadorAtual.reporArqueiroMorto();
+								
 							
 						-- desocupar posicao antiga 
 						jogadorAtual.desocupaPos(arq_a_mover);
@@ -173,9 +195,12 @@ operations
 						-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 						arq_a_mover.posicao.desocupar();
 						
-						-- ver se muda tudo
+						-- ver se muda tudo, -- ocupar posicao atraves de arqueiro
 						jogadorAtual.novaPos(arq_a_mover, pos_nova);
 						
+						if not(verifica_pos(pos_nova)) then (
+						-- Se chegou à ultima posicao entao pode recuperar um morto -> retorna a posicao onde tem que colocar o arqueiro morto
+							jogadorAtual.reporArqueiroMorto(););
 				
 						if (jogadorAtual.cor = <Branco>) then 
 								(
