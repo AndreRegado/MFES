@@ -152,17 +152,20 @@ operations
 				);
 									
 				-- Adicionar parametros jogador e nova pos para teste
+				-- Quando posicao é escolhida tem que ser copiada na integra. Ocupado tbm!
+				
 
-				public jogada: Arqueiro * Posicao ==> ()
+				public jogada: Arqueiro * Posicao ==> bool
 					jogada(arq_a_mover, pos_nova) == (
 															
+						-- verificaçao na funçao que da a pos e nao aqui
 						--cancelar o move ou nao deixar fazer o move se a posicao for ocupado por um arqueiro da mesma team
 						if (jogadorAtual.cor = <Branco>) then (
 							if(verifica_posicao(pos_nova) = 1) then (
-								return;))
+								return false;))
 						else (
 							if(verifica_posicao(pos_nova) = 2) then (
-								return; )
+								return false; )
 						);
 											
 						-- Escolher jogador a recuperar se for o caso --A posiçao nova tem um arqueiro inimigo
@@ -205,15 +208,16 @@ operations
 						if (jogadorAtual.cor = <Branco>) then 
 								(
 								-- ocupa tab primeiro porque posicao vai ser mudada e depois falha a comparaçao
-								ocupaTabBranco(arq_a_mover.posicao);
-								--jogadorAtual.ocupaPosBranco(arq_a_mover);
-								)
+							ocupaTabBranco(arq_a_mover.posicao);
+							--jogadorAtual.ocupaPosBranco(arq_a_mover);
+							)
 						else
 								(
-								ocupaTabPreto(arq_a_mover.posicao));
-								--jogadorAtual.ocupaPosPreto(arq_a_mover));
-							
-						MudarTurno();)
+								ocupaTabPreto(arq_a_mover.posicao);
+								--jogadorAtual.ocupaPosPreto(arq_a_mover);
+								);
+						MudarTurno();
+						return true;);
 						
 						-- fazer sem ser por jogador atual?
 							--dcl pontosPl1: nat:=0;
@@ -229,14 +233,14 @@ operations
 						--)
 
 					--)
-					pre
+					--pre
 					-- arqueiro a mover esta no set de arqueiros do jogadoratual, está vivo,
 					-- não está na ultima posicao e a posicao nova faz parte das posicoes adjacentes
 					-- à peça onde está agora
-					jogadorAtual.cor = <Branco> 
+					--jogadorAtual.cor = <Branco> 
 					--and arq_a_mover in set jogadorAtual.arqueiros 
-					and (arq_a_mover.vivo = <True>)
-					and arq_a_mover.posicao.getY() <> 4;
+					--and (arq_a_mover.vivo = <True>)
+					--and arq_a_mover.posicao.getY() <> 4;
 					--and pos_nova in set arq_a_mover.posicao.adjacentes;
 					--or
 					-- arqueiro a mover esta no set de arqueiros do jogadoratual, está vivo,
@@ -259,13 +263,25 @@ operations
 					-- retorna posicao do tabuleiro igual a parametro
 					public tabPos: Posicao ==> Posicao
 						tabPos(pos) == (
-						dcl ret_pos: Posicao;
+						dcl ret_pos: Posicao:= new Posicao(9,9,9);
 								for all pos_temp in set tabuleiro do
-									if(pos_temp.getX() = pos.getX() and pos_temp.getY() = pos.getY() and pos_temp.ocupado = pos.ocupado) then
-									ret_pos := pos_temp;
+									if(pos_temp.getX() = pos.getX() and pos_temp.getY() = pos.getY()) then (
+									ret_pos.X := pos_temp.getX();
+									ret_pos.Y := pos_temp.getY();
+									ret_pos.ocupado := pos_temp.getOcupado();
+									return ret_pos;);
 								
 						return ret_pos;		
 					);
+					-- para teste
+					-- para teste
+					-- para teste
+					public mudatabPos: Posicao ==> ()
+						mudatabPos(pos) == (
+								for all pos_temp in set tabuleiro do
+									if(pos_temp.getX() = pos.getX() and pos_temp.getY() = pos.getY()) then (
+									pos_temp.ocuparEquipaPreto();
+					));
 					
 					-- desocupa posicao pos no tabuleiro
 					public desocupaTab: Posicao ==> ()
@@ -280,7 +296,8 @@ operations
 					public ocupaTabBranco: Posicao ==> ()
 						ocupaTabBranco(pos) == (
 								for all pos_temp in set tabuleiro do (
-									if(pos_temp = pos) then (
+									if(pos_temp.getX() = pos.getX() 
+									and pos_temp.getY() = pos.getY()) then (
 									pos_temp.ocuparEquipaBranco();
 									return;		
 					)));
@@ -290,7 +307,8 @@ operations
 					public ocupaTabPreto: Posicao ==> ()
 						ocupaTabPreto(pos) == (
 								for all pos_temp in set tabuleiro do (
-									if(pos_temp = pos) then (
+									if(pos_temp.getX() = pos.getX() 
+									and pos_temp.getY() = pos.getY()) then (
 									pos_temp.ocuparEquipaPreto();
 									return;		
 					)));

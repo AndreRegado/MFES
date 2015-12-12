@@ -61,7 +61,8 @@ operations
 				for all arq in set arqueiros do
 					if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then (
 						arq.matar();
-						desocupaPos(arq);
+						--desocupaPos(arq);
+						arq.posicao.desocupar();
 						return)
 			);
 			
@@ -69,7 +70,7 @@ operations
 			public marcaArqueiro: Posicao ==> ()
 			marcaArqueiro(pos) == (
 				for all arq in set arqueiros do
-					if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY() and arq.posicao.ocupado = pos.ocupado) then (
+					if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then (
 						arq.marcar();
 						return)
 			);

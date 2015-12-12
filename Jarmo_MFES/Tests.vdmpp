@@ -31,9 +31,10 @@ class Tests
           	AssertTrue(arq.getVivo() = <False>);
       );
             
-    public Tests_inicia_board : () ==> ()
-		Tests_inicia_board() == 
+    public Tests_jogada_casa_vazia : () ==> ()
+		Tests_jogada_casa_vazia() == 
             ( 	
+            dcl bool_jogada : bool;
             		dcl	j_1: Jarmo:=new Jarmo();
             		dcl p1: Posicao := new Posicao(0,0,1);
    							dcl a1: Arqueiro := new Arqueiro(p1);
@@ -45,7 +46,7 @@ class Tests
    							dcl arq_mov_comp: Arqueiro := new Arqueiro(p_nova);
    							
    							--Jogada de teste com 1º arqueiro de <Branco> para (1,2)
-   							j_1.jogada(a1,p12);
+   							bool_jogada:=	j_1.jogada(a1,p12);
    							
    							
    							-- Troca jogador atual
@@ -60,6 +61,89 @@ class Tests
               	and arq_movido.posicao.getOcupado() = arq_mov_comp.posicao.getOcupado()
               	and arq_movido.vivo = arq_mov_comp.vivo
               	and arq_movido.marcado = arq_mov_comp.marcado);
+            );
+            
+            
+            
+            
+            public Tests_jogada_casa_amigo : () ==> ()
+						Tests_jogada_casa_amigo() == 
+            ( 	
+            		dcl	j_1: Jarmo:=new Jarmo();
+            		dcl p1: Posicao := new Posicao(0,0,1);
+   							dcl a1: Arqueiro := new Arqueiro(p1);
+   	
+   							dcl p12: Posicao := new Posicao(1,2,1);
+   							
+   							
+   							--Jogada de teste com 1º arqueiro de <Branco> para (1,2) que já esta "ocupada" por um branco
+   							
+              	AssertTrue(j_1.jogada(a1,p12) = false);
+               	
+            );
+            
+             public Tests_jogada_casa_inimigo : () ==> ()
+							Tests_jogada_casa_inimigo() == 
+            ( 	
+            	dcl p21: Posicao := new Posicao(0,4,2);
+							dcl p22: Posicao := new Posicao(1,2,2);
+							dcl p23: Posicao := new Posicao(4,4,2);
+							dcl p24: Posicao := new Posicao(3,2,2);
+							dcl p25: Posicao := new Posicao(4,4,2);
+							
+							dcl a1: Arqueiro := new Arqueiro(p21);
+							dcl a2: Arqueiro := new Arqueiro(p22);
+							dcl a3: Arqueiro := new Arqueiro(p23);
+							dcl a4: Arqueiro := new Arqueiro(p24);
+							dcl a5: Arqueiro := new Arqueiro(p25);
+							
+							dcl arqueiros: set of Arqueiro := {a1,a2,a3,a4,a5};
+							-- ...............
+							dcl bool_jogada : bool;
+            	dcl	j_1: Jarmo:=new Jarmo();
+            	
+            	dcl p1: Posicao := new Posicao(0,0,1);	
+   						dcl arqueiro_teste: Arqueiro := new Arqueiro(p1);
+   						
+   						dcl pos_p1desocupa_test: Posicao;
+   						dcl pos_p1desocupa_test_temp: Posicao;
+   						dcl p2: Posicao := new Posicao(0,0,0);	
+   	
+   						dcl arq_movido: Arqueiro;
+   						dcl arq_inimigo_morto: Arqueiro;
+   						dcl p12: Posicao := new Posicao(1,2,2);
+   						
+   						dcl p_final: Posicao := new Posicao(1,2,1);
+   						dcl arq_final: Arqueiro;
+   							
+   							
+   							--Jogada de teste com 1º arqueiro de <Branco> para (1,2)
+   							j_1.jogadorAdversario.setArqueiros(arqueiros);
+   							-- marca posicao do tabuleiro como ocupado por equipa preta
+   							j_1.mudatabPos(p12);
+   							
+   							bool_jogada:=	j_1.jogada(arqueiro_teste,p12);
+   							--arqueiro marcado na posicao nova (adversário já trocou, agora adversario = branco)
+   							-- posicao do arqueiro ainda nao mudou por isso nao se testa com a nova posicao
+   							arq_movido := j_1.jogadorAdversario.arqueiroPorPosicao(p12);
+   							
+   							AssertTrue(bool_jogada = true);
+   							AssertTrue(arq_movido.marcado = <True>);
+   							--arqueio inimigo morto (
+   							arq_inimigo_morto := j_1.jogadorAtual.arqueiroPorPosicao(p12);
+   							AssertTrue(arq_inimigo_morto.vivo = <False>);
+   							--posicao antiga tabuleiro desocupada
+   							--j_1.desocupaTab(a1.posicao);
+   							pos_p1desocupa_test := new Posicao(0,0,0); 
+   							pos_p1desocupa_test_temp :=	j_1.tabPos(p2);
+   							AssertTrue(pos_p1desocupa_test_temp.getOcupado() = 0);
+   							--arqueiro com nova pos
+   							arq_final := j_1.jogadorAdversario.arqueiroPorPosicao(p_final);
+   							AssertTrue(arq_final.posicao.getX() = p_final.getX()
+   							and arq_final.posicao.getY() = p_final.getY()
+   							and arq_final.posicao.getOcupado() = p_final.getOcupado());
+   							
+   						
             );
             
             -- verifica se arqueiro é marcado depois de matar outro
@@ -271,23 +355,6 @@ class Tests
 				
 				AssertTrue(pontos=8);
 			);
-			
-		public Tests_Jogada : () ==> ()
-			Tests_Jogada() == (
-				dcl pos1 : Posicao := new Posicao(0,0,0);
-				dcl	j_1: Jarmo:=new Jarmo();
-				dcl pos : Posicao := new Posicao(0,0,1);
-				dcl pos_nova: Posicao := new Posicao(2,1,0);
-				dcl a1: Arqueiro := new Arqueiro(pos);
-				
-				j_1.jogada(a1,pos_nova);
-				
-				-- Troca jogador atual
-        AssertTrue(j_1.jogadorAtual.cor = <Preto>);
-				
-				pos1 := j_1.jogadorAdversario.posicaoPorArqueiro(a1);
-				
-				AssertTrue(pos1.getX() = 2 and pos1.getY() = 1);
-			)
+
 
 end Tests
