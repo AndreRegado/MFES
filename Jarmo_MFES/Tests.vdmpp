@@ -55,7 +55,11 @@ class Tests
                	& (s.posicao.getX() = 1 and s.posicao.getY() = 2 and s.posicao.ocupado = 1);
               	
               	-- Testa se arqueiro movido tem as caracteristicas corretas
-              	AssertTrue(arq_movido <> arq_mov_comp);
+              	AssertTrue(arq_movido.posicao.getX() = arq_mov_comp.posicao.getX() 
+              	and arq_movido.posicao.getY() = arq_mov_comp.posicao.getY() 
+              	and arq_movido.posicao.getOcupado() = arq_mov_comp.posicao.getOcupado()
+              	and arq_movido.vivo = arq_mov_comp.vivo
+              	and arq_movido.marcado = arq_mov_comp.marcado);
             );
             
             -- verifica se arqueiro é marcado depois de matar outro

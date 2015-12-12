@@ -142,28 +142,28 @@ operations
 					);
 					
 				
-				-- Adicionar parametros jogador e nova pos para teste
+				-- pos_nova nao pode estar ocupada por amigo
+				-- 
 				
 				public jogada: Arqueiro * Posicao ==> ()
 					jogada(arq_a_mover, pos_nova) == (
 				
 						-- Escolher jogador a recuperar se for o caso
 						if(verifica_pos(pos_nova)) then (
-							
 							jogadorAtual.marcaArqueiro(arq_a_mover.posicao);
 							-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 							arq_a_mover.marcar();
 							jogadorAdversario.mataArqueiro(pos_nova);
 							--desocupaTab(pos_nova);
-							
+							);
 							-- Se matou e chegou à ultima posicao entao pode recuperar um morto
-							if (jogadorAtual.cor = <Branco>) then 
+							if(arq_a_mover.marcado = <True>) then(
+							if (jogadorAtual.cor = <Branco>) then (
 								 (if(pos_nova.getY() = 4) then
-									recupera_jog := true;)
+									recupera_jog := true;))
 							else
 								 (if(pos_nova.getY() = 0) then
-									recupera_jog := true;)
-							);
+									recupera_jog := true;));
 							
 						-- desocupar posicao antiga 
 						jogadorAtual.desocupaPos(arq_a_mover);
@@ -181,12 +181,12 @@ operations
 								(
 								-- ocupa tab primeiro porque posicao vai ser mudada e depois falha a comparaçao
 								ocupaTabBranco(arq_a_mover.posicao);
-								jogadorAtual.ocupaPosBranco(arq_a_mover);
+								--jogadorAtual.ocupaPosBranco(arq_a_mover);
 								)
 						else
 								(
-								ocupaTabPreto(arq_a_mover.posicao);
-								jogadorAtual.ocupaPosPreto(arq_a_mover));
+								ocupaTabPreto(arq_a_mover.posicao));
+								--jogadorAtual.ocupaPosPreto(arq_a_mover));
 							
 						MudarTurno();)
 						
@@ -205,25 +205,24 @@ operations
 
 					--)
 					pre
-					(not gameOver() and
 					-- arqueiro a mover esta no set de arqueiros do jogadoratual, está vivo,
 					-- não está na ultima posicao e a posicao nova faz parte das posicoes adjacentes
 					-- à peça onde está agora
-					((jogadorAtual.cor = <Branco> 
-					and arq_a_mover in set jogadorAtual.arqueiros 
+					jogadorAtual.cor = <Branco> 
+					--and arq_a_mover in set jogadorAtual.arqueiros 
 					and (arq_a_mover.vivo = <True>)
-					and arq_a_mover.posicao.getY() <> 4
-					and pos_nova in set arq_a_mover.posicao.adjacentes
-					or
+					and arq_a_mover.posicao.getY() <> 4;
+					--and pos_nova in set arq_a_mover.posicao.adjacentes;
+					--or
 					-- arqueiro a mover esta no set de arqueiros do jogadoratual, está vivo,
 					-- não está na ultima posicao e a posicao nova faz parte das posicoes adjacentes
 					-- à peça onde está agora
-					(jogadorAtual.cor = <Preto> 
-					and arq_a_mover in set jogadorAtual.arqueiros 
-					and (arq_a_mover.vivo = <True>)
-					and arq_a_mover.posicao.getY() <> 0 
-					and pos_nova in set arq_a_mover.posicao.adjacentes
-					))));
+					--(jogadorAtual.cor = <Preto> 
+					--and arq_a_mover in set jogadorAtual.arqueiros 
+					--and (arq_a_mover.vivo = <True>)
+					--and arq_a_mover.posicao.getY() <> 0 
+					--and pos_nova in set arq_a_mover.posicao.adjacentes
+					--)));
 				
 		
 	
