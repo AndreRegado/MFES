@@ -260,7 +260,19 @@ operations
 					-- escolher posicao adjacente sem ter amigo
 					-- escolher arqueiro a mover
 					
+					--teste verifica se mudança no tab afeta arqueiros
+					public testeTolo: () ==> ()
+						testeTolo() == (
+								for all pos_temp in set tabuleiro do (
+									pos_temp.SetX(6);
+									pos_temp.SetY(6);
+									pos_temp.ocuparEquipaBranco();
+					));
+				
+					
+					
 					-- retorna posicao do tabuleiro igual a parametro
+					
 					public tabPos: Posicao ==> Posicao
 						tabPos(pos) == (
 						dcl ret_pos: Posicao:= new Posicao(9,9,9);

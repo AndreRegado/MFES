@@ -126,6 +126,7 @@ class Tests
    							--arqueiro marcado na posicao nova (adversário já trocou, agora adversario = branco)
    							-- posicao do arqueiro ainda nao mudou por isso nao se testa com a nova posicao
    							arq_movido := j_1.jogadorAdversario.arqueiroPorPosicao(p12);
+   							j_1.testeTolo();
    							
    							AssertTrue(bool_jogada = true);
    							AssertTrue(arq_movido.marcado = <True>);

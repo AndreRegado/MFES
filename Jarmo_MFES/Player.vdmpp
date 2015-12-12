@@ -125,6 +125,24 @@ operations
 		));
 		
 		-- ocupar posicao atraves de arqueiro
+		--public novaPos: Arqueiro * Posicao ==> ()
+		--		novaPos(arq, pos_nova) == (
+		--		for all s in set arqueiros do (
+		--			if (s.posicao.getX() = arq.posicao.getX() 
+		--			and s.posicao.getY() = arq.posicao.getY()
+		--			and s.vivo = arq.vivo
+		--			and s.marcado = arq.marcado) then (
+		--				s.posicao.SetX(pos_nova.getX()); 
+		--				s.posicao.SetY(pos_nova.getY());
+		--			if(cor = <Branco>) then 
+		--				s.posicao.ocuparEquipaBranco()
+		--			else
+		--				s.posicao.ocuparEquipaPreto())
+		--			;
+					
+		--));
+		
+		-- ocupar posicao atraves de arqueiro
 		public novaPos: Arqueiro * Posicao ==> ()
 				novaPos(arq, pos_nova) == (
 				for all s in set arqueiros do (
@@ -132,16 +150,8 @@ operations
 					and s.posicao.getY() = arq.posicao.getY()
 					and s.vivo = arq.vivo
 					and s.marcado = arq.marcado) then (
-						s.posicao.SetX(pos_nova.getX()); 
-						s.posicao.SetY(pos_nova.getY());
-					if(cor = <Branco>) then 
-						s.posicao.ocuparEquipaBranco()
-					else
-						s.posicao.ocuparEquipaPreto())
-					;
-					
-		));
-		
+						s.SetPosicao(pos_nova);
+		)));
 		
 		-- ocupar posicao com Arqueiro Branco
 		public ocupaPosBranco: Arqueiro ==> ()
