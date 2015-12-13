@@ -12,7 +12,6 @@ instance variables
  public vencedor: Player;
  public temp_pl: Player;
  public adjacentes_poss: set of Posicao;
-
  
  public recupera_jog: bool;
  public arq_a_matar: Arqueiro;
@@ -104,23 +103,18 @@ operations
 		public getTurno : () ==> Player
 			getTurno() == (return jogadorAtual;);
 		
-		
 		-- get Tabuleiro
 		public getTabuleiro: () ==> set of Posicao
 			getTabuleiro() == (return tabuleiro;);
-			
-			
 
 		-- Mudar de turno
 		public MudarTurno : () ==> ()
 			MudarTurno() == (
 			jogadorAtual := iota s in set jogadores & s <> jogadorAtual;
 			jogadorAdversario := iota q in set jogadores & q <> jogadorAtual;);
-				
+			
 		
 	 -- game over : quando termina o jogo
-	 -- falta ver arqueiros do adversario
-	 
 	pure public gameOver: () ==> bool
 			gameOver() == (
 				dcl res: bool := true;
@@ -150,6 +144,25 @@ operations
 				verifica_posicao(pos) == (
 					return pos.getOcupado();
 				);
+				
+				--verificar se a posiçao nova é adjacente da atual
+				public verificar_adjacente: Posicao * Posicao ==> bool
+				verificar_adjacente(pos_atual, pos_nova) == (
+					dcl posicao_tab : Posicao := new Posicao(5,5,5);
+					dcl adjacentes : set of Posicao;
+					
+					for all pos_jogador in set tabuleiro do (
+						if(pos_atual.getX() = pos_jogador.getX() and pos_atual.getY() = pos_jogador.getY()) then
+							 posicao_tab := pos_jogador;
+					);
+					
+					adjacentes := posicao_tab.getAdjacentes();					
+					for all pos in set adjacentes do (
+						if(pos_nova.getX() = pos.getX() and pos_nova.getY() = pos.getY()) then
+							return true;
+					);
+					return false;
+				);
 									
 				-- Adicionar parametros jogador e nova pos para teste
 				-- Quando posicao é escolhida tem que ser copiada na integra. Ocupado tbm!
@@ -157,7 +170,9 @@ operations
 				-- 
 				public jogada: Arqueiro * Posicao ==> bool
 					jogada(arq_a_mover, pos_nova) == (
-															
+							
+						--verifica se a posicao nova é adjacente da actual
+						
 						-- verificaçao na funçao que da a pos e nao aqui
 						--cancelar o move ou nao deixar fazer o move se a posicao for ocupado por um arqueiro da mesma team
 						if (jogadorAtual.cor = <Branco>) then (
@@ -170,14 +185,18 @@ operations
 											
 						-- Escolher jogador a recuperar se for o caso --A posiçao nova tem um arqueiro inimigo
 						if(verifica_pos(pos_nova)) then (
+						
+							dcl posicao_temp : Posicao := new Posicao (5,5,5);
+							dcl arq : Arqueiro := new Arqueiro(posicao_temp);
+						
 							jogadorAtual.marcaArqueiro(arq_a_mover);
 							-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
 							--arq_a_mover.marcar();
 							jogadorAdversario.mataArqueiro(pos_nova);
-
+							arq := jogadorAdversario.arqueiroPorPosicao(pos_nova);
+							jogadorAdversario.desocupaPos(arq);
 							--desocupaTab(pos_nova);
 							);
-							
 								
 							
 						-- desocupar posicao antiga 
@@ -192,17 +211,18 @@ operations
 						jogadorAtual.novaPos(arq_a_mover, pos_nova);
 						
 						-- Se matou e chegou à ultima posicao entao pode recuperar um morto
-							
 							if (jogadorAtual.cor = <Branco>) then (
 									jogadorAtual.ocupaPosBranco(pos_nova);
 								if(arq_a_mover.marcado = <True>) then(
 								 (if(pos_nova.getY() = 4) then
-									recupera_jog := true;)))
+								 		jogadorAtual.reporArqueiroMorto();)))
+									--recupera_jog := true;)))
 							else(
 									jogadorAtual.ocupaPosPreto(pos_nova);
 									if(arq_a_mover.marcado = <True>) then(
 								 (if(pos_nova.getY() = 0) then
-									recupera_jog := true;)));
+									jogadorAtual.reporArqueiroMorto();)));
+									--recupera_jog := true;)));
 						
 						
 						MudarTurno();

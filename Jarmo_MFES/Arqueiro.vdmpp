@@ -34,6 +34,7 @@ operations
 			
 		public marcar : () ==> ()
 			marcar() == marcado := <True>;	
+			
 -- TODO Define operations here
 functions
 -- TODO Define functiones here

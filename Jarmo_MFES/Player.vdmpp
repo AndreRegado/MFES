@@ -70,10 +70,10 @@ operations
 				public mataArqueiro: Posicao ==> ()
 				mataArqueiro(pos) == (
 				for all arq in set arqueiros do
-					if(arq.getPosicao() = pos) then (
+					if(arq.getPosicao().getX() = pos.getX() and arq.getPosicao().getY() = pos.getY()) then (
 						arq.matar();
 						--desocupaPos(arq);
-						arq.posicao.desocupar();
+						--arq.posicao.desocupar();
 						return)
 			);
 			
@@ -90,9 +90,9 @@ operations
 			public marcaArqueiro: Arqueiro ==> ()
 			marcaArqueiro(arq_in) == (
 				for all arq in set arqueiros do
-					if(arq = arq_in) then (
-						arq.marcar();
-						return)
+					if(arq.posicao.getX() = arq_in.posicao.getX() and arq.posicao.getY() = arq_in.posicao.getY()) then (
+						arq.marcar();return)
+						--arq_in.marcar();)
 			);
 			
 		-- retorna arqueiro por posicao
@@ -101,14 +101,14 @@ operations
 						dcl p1: Posicao := new Posicao(0,0,0);
 						dcl arqe: Arqueiro := new Arqueiro(p1);
 						for all arq in set arqueiros do 
-						if (arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then 
-						(
-						arqe.marcado := arq.marcado;
-						arqe.vivo := arq.vivo;
-						arqe.posicao.SetX(arq.posicao.getX());
-						arqe.posicao.SetY(arq.posicao.getY());
-						arqe.posicao.ocupado := arq.posicao.getOcupado();
-						);
+							if (arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then 
+							(
+							arqe.marcado := arq.marcado;
+							arqe.vivo := arq.vivo;
+							arqe.posicao.SetX(arq.posicao.getX());
+							arqe.posicao.SetY(arq.posicao.getY());
+							arqe.posicao.ocupado := arq.posicao.getOcupado();
+							);
 						return arqe;
 				);
 		
@@ -152,34 +152,25 @@ operations
 					and s.posicao.getY() = arq.posicao.getY()) then
 						s.posicao.desocupar();
 		));
-		
-		-- ocupar posicao atraves de arqueiro
-		--public novaPos: Arqueiro * Posicao ==> ()
-		--		novaPos(arq, pos_nova) == (
-		--		for all s in set arqueiros do (
-		--			if (s.posicao.getX() = arq.posicao.getX() 
-		--			and s.posicao.getY() = arq.posicao.getY()
-		--			and s.vivo = arq.vivo
-		--			and s.marcado = arq.marcado) then (
-		--				s.posicao.SetX(pos_nova.getX()); 
-		--				s.posicao.SetY(pos_nova.getY());
-		--			if(cor = <Branco>) then 
-		--				s.posicao.ocuparEquipaBranco()
-		--			else
-		--				s.posicao.ocuparEquipaPreto())
-		--			;
-					
-		--));
-		
+				
 		-- ocupar posicao atraves de arqueiro
 		public novaPos: Arqueiro * Posicao ==> ()
 				novaPos(arq, pos_nova) == (
 				for all s in set arqueiros do (
 					if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then (
 						s.SetPosicao(pos_nova);
+						valor_ocupado(pos_nova);
+						return;
 		)));
 		
-		
+		--ocupar consoante o jogador que for
+		public valor_ocupado: Posicao ==> ()
+			valor_ocupado(pos) == (
+				if(cor = <Branco>) then (
+							pos.ocuparEquipaBranco();)
+				else (
+							pos.ocuparEquipaPreto();)
+				);
 		
 		-- ocupar posicao com Arqueiro Branco
 		public ocupaPosBranco: Posicao ==> ()
