@@ -56,10 +56,21 @@ operations
 		);
 		
 		-- mata arqueiro que esta na posicao pos
-		public mataArqueiro: Posicao ==> ()
-			mataArqueiro(pos) == (
+		--public mataArqueiro: Posicao ==> ()
+		--	mataArqueiro(pos) == (
+			--	for all arq in set arqueiros do
+			--		if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then (
+			--			arq.matar();
+					--desocupaPos(arq);
+			--			arq.posicao.desocupar();
+			--			return)
+			--);
+			
+			-- mata arqueiro que esta na posicao pos
+				public mataArqueiro: Posicao ==> ()
+				mataArqueiro(pos) == (
 				for all arq in set arqueiros do
-					if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then (
+					if(arq.getPosicao() = pos) then (
 						arq.matar();
 						--desocupaPos(arq);
 						arq.posicao.desocupar();
@@ -67,10 +78,19 @@ operations
 			);
 			
 		-- marca arqueiro que esta na posicao pos	
-			public marcaArqueiro: Posicao ==> ()
-			marcaArqueiro(pos) == (
+		--	public marcaArqueiro: Posicao ==> ()
+		--	marcaArqueiro(pos) == (
+		--		for all arq in set arqueiros do
+		--			if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then (
+		--				arq.marcar();
+		--				return)
+		--	);
+			
+			-- marca arqueiro que esta na posicao pos	
+			public marcaArqueiro: Arqueiro ==> ()
+			marcaArqueiro(arq_in) == (
 				for all arq in set arqueiros do
-					if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then (
+					if(arq = arq_in) then (
 						arq.marcar();
 						return)
 			);
@@ -117,10 +137,19 @@ operations
 	
 	
 		-- desocupar posicao atraves de arqueiro
+		--public desocupaPos: Arqueiro ==> ()
+		--		desocupaPos(arq) == (
+		--		for all s in set arqueiros do (
+		--			if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then
+		--				s.posicao.desocupar();
+		--));
+		
+		-- desocupar posicao atraves de arqueiro
 		public desocupaPos: Arqueiro ==> ()
 				desocupaPos(arq) == (
 				for all s in set arqueiros do (
-					if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then
+					if (s.posicao.getX() = arq.posicao.getX()
+					and s.posicao.getY() = arq.posicao.getY()) then
 						s.posicao.desocupar();
 		));
 		
@@ -146,26 +175,27 @@ operations
 		public novaPos: Arqueiro * Posicao ==> ()
 				novaPos(arq, pos_nova) == (
 				for all s in set arqueiros do (
-					if (s.posicao.getX() = arq.posicao.getX() 
-					and s.posicao.getY() = arq.posicao.getY()
-					and s.vivo = arq.vivo
-					and s.marcado = arq.marcado) then (
+					if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then (
 						s.SetPosicao(pos_nova);
 		)));
 		
+		
+		
 		-- ocupar posicao com Arqueiro Branco
-		public ocupaPosBranco: Arqueiro ==> ()
-				ocupaPosBranco(arq) == (
+		public ocupaPosBranco: Posicao ==> ()
+				ocupaPosBranco(pos) == (
 				for all s in set arqueiros do (
-					if (s = arq) then
+					if (s.posicao.getX() = pos.getX()
+					and s.posicao.getY() = pos.getY()) then
 						s.posicao.ocuparEquipaBranco();
 		));
 		
 		-- ocupar posicao com Arqueiro Preto
-		public ocupaPosPreto: Arqueiro ==> ()
-				ocupaPosPreto(arq) == (
+		public ocupaPosPreto: Posicao ==> ()
+				ocupaPosPreto(pos) == (
 				for all s in set arqueiros do (
-					if (s = arq) then
+					if (s.posicao.getX() = pos.getX()
+					and s.posicao.getY() = pos.getY()) then
 						s.posicao.ocuparEquipaPreto();
 		));
 			

@@ -84,68 +84,98 @@ class Tests
             
              public Tests_jogada_casa_inimigo : () ==> ()
 							Tests_jogada_casa_inimigo() == 
-            ( 	
-            	dcl p21: Posicao := new Posicao(0,4,2);
-							dcl p22: Posicao := new Posicao(1,2,2);
-							dcl p23: Posicao := new Posicao(4,4,2);
-							dcl p24: Posicao := new Posicao(3,2,2);
+            ( 
+            dcl	j_1: Jarmo:=new Jarmo();
+            dcl bool_test: bool;
+            dcl p1: Posicao := new Posicao(0,0,1);
+						dcl p2: Posicao := new Posicao(1,0,1);
+						dcl p3: Posicao := new Posicao(2,0,1);
+							dcl p4: Posicao := new Posicao(3,0,1);
+							dcl p5: Posicao := new Posicao(4,0,1);
+							
+							
+							-- Segunda linha
+							dcl p6: Posicao := new Posicao(0,1,0);
+							dcl p7: Posicao := new Posicao(1,1,0);
+							dcl p8: Posicao := new Posicao(2,1,0);
+							dcl p9: Posicao := new Posicao(3,1,0);
+							dcl p10: Posicao := new Posicao(4,1,0);
+							
+							-- Terceira linha
+							dcl p11: Posicao := new Posicao(0,2,0);
+							dcl p12: Posicao := new Posicao(1,2,0);
+							dcl p13: Posicao := new Posicao(2,2,0);
+							dcl p14: Posicao := new Posicao(3,2,0);
+							dcl p15: Posicao := new Posicao(4,2,0);
+							
+							-- Quarta linha
+							dcl p16: Posicao := new Posicao(0,3,0);
+							dcl p17: Posicao := new Posicao(1,3,0);
+							dcl p18: Posicao := new Posicao(2,3,0);
+							dcl p19: Posicao := new Posicao(3,3,0);
+							dcl p20: Posicao := new Posicao(4,3,0);
+							
+							-- Quinta linha
+							dcl p21: Posicao := new Posicao(0,4,2);
+							dcl p22: Posicao := new Posicao(1,4,2);
+							dcl p23: Posicao := new Posicao(2,4,2);
+							dcl p24: Posicao := new Posicao(3,4,2);
 							dcl p25: Posicao := new Posicao(4,4,2);
 							
-							dcl a1: Arqueiro := new Arqueiro(p21);
-							dcl a2: Arqueiro := new Arqueiro(p22);
-							dcl a3: Arqueiro := new Arqueiro(p23);
-							dcl a4: Arqueiro := new Arqueiro(p24);
-							dcl a5: Arqueiro := new Arqueiro(p25);
-							
-							dcl arqueiros: set of Arqueiro := {a1,a2,a3,a4,a5};
-							-- ...............
-							dcl bool_jogada : bool;
-            	dcl	j_1: Jarmo:=new Jarmo();
-            	
-            	dcl p1: Posicao := new Posicao(0,0,1);	
-   						dcl arqueiro_teste: Arqueiro := new Arqueiro(p1);
-   						
-   						dcl pos_p1desocupa_test: Posicao;
-   						dcl pos_p1desocupa_test_temp: Posicao;
-   						dcl p2: Posicao := new Posicao(0,0,0);	
+							dcl a1: Arqueiro := new Arqueiro(p1);
+
+		-- Definir adjacentes
+		p1.setAdjacentes({p12,p8});
+		p2.setAdjacentes({p11,p9});
+		p3.setAdjacentes({p6,p12,p10});
+		p4.setAdjacentes({p7,p15});
+		p5.setAdjacentes({p8,p14});
+		p6.setAdjacentes({p3,p13});
+		p7.setAdjacentes({p4,p8,p14,p12});
+		p8.setAdjacentes({p1,p5,p17,p7,p9});
+		p9.setAdjacentes({p2,p8,p14,p20});
+		p10.setAdjacentes({p3,p13});
+		p11.setAdjacentes({p2,p22});
+		p12.setAdjacentes({p1,p7,p3,p19,p17,p21});
+		p13.setAdjacentes({p6,p10,p16,p24});
+		p14.setAdjacentes({p7,p9,p5,p25,p19});
+		p15.setAdjacentes({p4,p18});
+		p16.setAdjacentes({p13,p23});
+		p17.setAdjacentes({p12,p8,p18,p24});
+		p18.setAdjacentes({p17,p15,p19,p25,p21});
+		p19.setAdjacentes({p22,p18,p12,p14});
+		p20.setAdjacentes({p23,p9});
+		p21.setAdjacentes({p12,p18});
+		p22.setAdjacentes({p11,p19});
+		p23.setAdjacentes({p16,p14,p20});
+		p24.setAdjacentes({p17,p13});
+		p25.setAdjacentes({p18,p14});
+   	p12.setAdjacentes({p1,p7,p3,p19,p17,p21});	
    	
-   						dcl arq_movido: Arqueiro;
-   						dcl arq_inimigo_morto: Arqueiro;
-   						dcl p12: Posicao := new Posicao(1,2,2);
-   						
-   						dcl p_final: Posicao := new Posicao(1,2,1);
-   						dcl arq_final: Arqueiro;
-   							
-   							
-   							--Jogada de teste com 1º arqueiro de <Branco> para (1,2)
-   							j_1.jogadorAdversario.setArqueiros(arqueiros);
-   							-- marca posicao do tabuleiro como ocupado por equipa preta
-   							j_1.mudatabPos(p12);
-   							
-   							bool_jogada:=	j_1.jogada(arqueiro_teste,p12);
+   	
+   	bool_test:=	j_1.jogada(a1,p12);
    							--arqueiro marcado na posicao nova (adversário já trocou, agora adversario = branco)
    							-- posicao do arqueiro ainda nao mudou por isso nao se testa com a nova posicao
-   							arq_movido := j_1.jogadorAdversario.arqueiroPorPosicao(p12);
-   							j_1.testeTolo();
+   							--arq_movido := j_1.jogadorAdversario.arqueiroPorPosicao(p12);
+   							--j_1.testeTolo();
    							
-   							AssertTrue(bool_jogada = true);
-   							AssertTrue(arq_movido.marcado = <True>);
+   	AssertTrue(bool_test = true));
+   							--AssertTrue(arq_movido.marcado = <True>);
    							--arqueio inimigo morto (
-   							arq_inimigo_morto := j_1.jogadorAtual.arqueiroPorPosicao(p12);
-   							AssertTrue(arq_inimigo_morto.vivo = <False>);
+   							--arq_inimigo_morto := j_1.jogadorAtual.arqueiroPorPosicao(p12);
+   							--AssertTrue(arq_inimigo_morto.vivo = <False>);
    							--posicao antiga tabuleiro desocupada
    							--j_1.desocupaTab(a1.posicao);
-   							pos_p1desocupa_test := new Posicao(0,0,0); 
-   							pos_p1desocupa_test_temp :=	j_1.tabPos(p2);
-   							AssertTrue(pos_p1desocupa_test_temp.getOcupado() = 0);
+   							--pos_p1desocupa_test := new Posicao(0,0,0); 
+   							--pos_p1desocupa_test_temp :=	j_1.tabPos(p2);
+   							--AssertTrue(pos_p1desocupa_test_temp.getOcupado() = 0);
    							--arqueiro com nova pos
-   							arq_final := j_1.jogadorAdversario.arqueiroPorPosicao(p_final);
-   							AssertTrue(arq_final.posicao.getX() = p_final.getX()
-   							and arq_final.posicao.getY() = p_final.getY()
-   							and arq_final.posicao.getOcupado() = p_final.getOcupado());
+   							--arq_final := j_1.jogadorAdversario.arqueiroPorPosicao(p_final);
+   							--AssertTrue(arq_final.posicao.getX() = p_final.getX()
+   							--and arq_final.posicao.getY() = p_final.getY()
+   							--and arq_final.posicao.getOcupado() = p_final.getOcupado());
    							
-   						
-            );
+   				
             
             -- verifica se arqueiro é marcado depois de matar outro
             
@@ -156,7 +186,7 @@ class Tests
             		dcl p1: Posicao := new Posicao(0,0,1);
    							dcl a1: Arqueiro := new Arqueiro(p1);
    	
-   							j_1.jogadorAtual.marcaArqueiro(a1.posicao);
+   							--j_1.jogadorAtual.marcaArqueiro(a1.posicao);
    							a1 := j_1.jogadorAtual.arqueiroPorPosicao(p1);
    							-- Troca jogador atual
                	AssertTrue(a1.marcado = <True>);
