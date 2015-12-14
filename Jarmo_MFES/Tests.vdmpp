@@ -104,7 +104,7 @@ class Tests
               	AssertTrue(j_1.jogadorAdversario.arq_pos(p4).posicao.getX() = 2); 
               	AssertTrue(j_1.jogadorAdversario.arq_pos(p4).posicao.getY() = 3);
               	-- Testa se a posicao ocupado agora pelo arqueiro está efetivamente ocupada
-              	AssertTrue(j_1.tabPos(p4).ocupado = 1);
+              	AssertTrue(j_1.tabPos(p4).ocupado = 2);
               	-- Teste se a posicao ocupada inicialmente pelo arqueiro esta agora desocupada
               	AssertTrue(j_1.tabPos(p3).ocupado = 0);
             );
