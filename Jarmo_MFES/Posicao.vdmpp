@@ -5,6 +5,7 @@ public PosicaoX :: nat;
 public PosicaoY :: nat;
 public Ocupado :: nat;
 public Adjacentes :: set of Posicao;
+	
 values
 -- TODO Define values here
 instance variables
@@ -13,6 +14,8 @@ public X: nat;
 public Y: nat;
 public ocupado : nat;
 public adjacentes : set of Posicao;
+	-- inv self not in set adjacentes;
+	
 operations	
 -- TODO Define operations here
 public Posicao : nat * nat * nat ==> Posicao

@@ -26,6 +26,9 @@ operations
 		public getVivo : () ==> Vivo
 			getVivo() == (return vivo;);
 			
+		public setVivo : () ==> ()
+			setVivo() == (vivo := <True>);
+			
 		public matar : () ==> ()
 			matar() == vivo := <False>;
 			
@@ -33,7 +36,13 @@ operations
 			getMarcado() == (return marcado;);
 			
 		public marcar : () ==> ()
-			marcar() == marcado := <True>;	
+			marcar() == marcado := <True>;
+			
+		public desmarcar : () ==> ()
+			desmarcar() == marcado := <False>;		
+		
+		public ocupaPos: () ==> ()
+			ocupaPos() == (posicao.ocuparEquipaPreto());
 			
 -- TODO Define operations here
 functions

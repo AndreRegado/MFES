@@ -1,16 +1,17 @@
 class Player
 types
- 	 public Cor = <Branco> | <Preto>;
+ 	 public Cor = seq of char;
 
 instance variables
 public cor: Cor;
 public arqueiros : set of Arqueiro;
 public posicoes : set of Posicao;
+public pontos : nat := 0;
 
 operations
 	public Player: Cor * Posicao * Posicao * Posicao * Posicao * Posicao ==> Player
 	Player(tipo,p1,p2,p3,p4,p5) == (
-		if(tipo = <Branco>) then (
+		if(tipo = ['B','r','a','n','c','o']) then (
 			dcl a1: Arqueiro := new Arqueiro(p1);
 			dcl a2: Arqueiro := new Arqueiro(p2);
 			dcl a3: Arqueiro := new Arqueiro(p3);
@@ -21,7 +22,7 @@ operations
 		cor := tipo;
 		return self;
 		)
-		else if (tipo = <Preto>) then (
+		else if (tipo = ['P','r','e','t','o']) then (
 			dcl a1: Arqueiro := new Arqueiro(p1);
 			dcl a2: Arqueiro := new Arqueiro(p2);
 			dcl a3: Arqueiro := new Arqueiro(p3);
@@ -36,12 +37,11 @@ operations
 	
 	public contaPontos: () ==> nat
 		contaPontos() == (
-			dcl pontos: nat:=0;
 			-- Se jogador branco entao valem 2 pontos os arqueiros que estiverem na posicao y=4
-			if(cor = <Branco>) then (
+			if(cor = ['B','r','a','n','c','o']) then (
 				for all arqueiro in set arqueiros do (
-				if (arqueiro.posicao.getY() = 4 and arqueiro.vivo = <True>) then
-						pontos := pontos + 2
+				if (arqueiro.posicao.getY() = 4 and arqueiro.vivo = <True>) then (
+						pontos := pontos + 2;)
 				else if(arqueiro.vivo = <True>) then
 						pontos := pontos + 1;))
 			-- Se jogador preto entao valem 2 pontos os arqueiros que estiverem na posicao y=0
@@ -52,39 +52,18 @@ operations
 				else if (arqueiro.vivo = <True>) then
 						pontos := pontos + 1;));
 			return pontos;
-		
-		);
-		
-		-- mata arqueiro que esta na posicao pos
-		--public mataArqueiro: Posicao ==> ()
-		--	mataArqueiro(pos) == (
-			--	for all arq in set arqueiros do
-			--		if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then (
-			--			arq.matar();
-					--desocupaPos(arq);
-			--			arq.posicao.desocupar();
-			--			return)
-			--);
-			
+		)
+		post pontos > 0 and pontos <> pontos~;
+				
 			-- mata arqueiro que esta na posicao pos
 				public mataArqueiro: Posicao ==> ()
 				mataArqueiro(pos) == (
 				for all arq in set arqueiros do
 					if(arq.getPosicao().getX() = pos.getX() and arq.getPosicao().getY() = pos.getY()) then (
 						arq.matar();
-						--desocupaPos(arq);
-						--arq.posicao.desocupar();
 						return)
-			);
-			
-		-- marca arqueiro que esta na posicao pos	
-		--	public marcaArqueiro: Posicao ==> ()
-		--	marcaArqueiro(pos) == (
-		--		for all arq in set arqueiros do
-		--			if(arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then (
-		--				arq.marcar();
-		--				return)
-		--	);
+			)
+			post card arqueiros = card arqueiros~;
 			
 			-- marca arqueiro que esta na posicao pos	
 			public marcaArqueiro: Arqueiro ==> ()
@@ -92,8 +71,32 @@ operations
 				for all arq in set arqueiros do
 					if(arq.posicao.getX() = arq_in.posicao.getX() and arq.posicao.getY() = arq_in.posicao.getY()) then (
 						arq.marcar();return)
-						--arq_in.marcar();)
-			);
+			)
+			pre arq_in in set arqueiros
+			post card arqueiros = card arqueiros~;
+			
+			-- marca arqueiro que esta na posicao pos	
+			public desmarcaArqueiro: Arqueiro ==> ()
+			desmarcaArqueiro(arq_in) == (
+				for all arq in set arqueiros do
+					if(arq.posicao.getX() = arq_in.posicao.getX() and arq.posicao.getY() = arq_in.posicao.getY()) then (
+						arq.desmarcar();return)
+			)
+			pre arq_in in set arqueiros
+			post card arqueiros = card arqueiros~;
+			
+			public arq_pos: Posicao ==> Arqueiro
+				arq_pos(pos) == (
+						dcl p1: Posicao := new Posicao(9,9,9);
+						dcl arqe: Arqueiro := new Arqueiro(p1);
+						for all arq in set arqueiros do 
+							if (arq.posicao.getX() = pos.getX() and arq.posicao.getY() = pos.getY()) then 
+							(
+							return arq;
+							);
+						return arqe;
+				)
+			post card arqueiros = card arqueiros~;
 			
 		-- retorna arqueiro por posicao
 		public arqueiroPorPosicao: Posicao ==> Arqueiro
@@ -134,15 +137,6 @@ operations
 			setArqueiros(arqs) == (
 				arqueiros:=arqs;
 			);
-	
-	
-		-- desocupar posicao atraves de arqueiro
-		--public desocupaPos: Arqueiro ==> ()
-		--		desocupaPos(arq) == (
-		--		for all s in set arqueiros do (
-		--			if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then
-		--				s.posicao.desocupar();
-		--));
 		
 		-- desocupar posicao atraves de arqueiro
 		public desocupaPos: Arqueiro ==> ()
@@ -151,44 +145,29 @@ operations
 					if (s.posicao.getX() = arq.posicao.getX()
 					and s.posicao.getY() = arq.posicao.getY()) then
 						s.posicao.desocupar();
-		));
+		))
+			pre arq in set arqueiros
+			post card arqueiros = card arqueiros~;
 				
 		-- ocupar posicao atraves de arqueiro
 		public novaPos: Arqueiro * Posicao ==> ()
 				novaPos(arq, pos_nova) == (
 				for all s in set arqueiros do (
 					if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then (
+				
 						s.SetPosicao(pos_nova);
-						valor_ocupado(pos_nova);
-						return;
-		)));
+						
+					if(cor = ['B','r','a','n','c','o']) then
+							s.posicao.ocuparEquipaBranco()
+					else
+					    s.posicao.ocuparEquipaPreto();
+					--	return;
+						
+		)))
+			pre arq in set arqueiros and pos_nova in set arq.posicao.adjacentes
+			post card arqueiros = card arqueiros~;
 		
-		--ocupar consoante o jogador que for
-		public valor_ocupado: Posicao ==> ()
-			valor_ocupado(pos) == (
-				if(cor = <Branco>) then (
-							pos.ocuparEquipaBranco();)
-				else (
-							pos.ocuparEquipaPreto();)
-				);
-		
-		-- ocupar posicao com Arqueiro Branco
-		public ocupaPosBranco: Posicao ==> ()
-				ocupaPosBranco(pos) == (
-				for all s in set arqueiros do (
-					if (s.posicao.getX() = pos.getX()
-					and s.posicao.getY() = pos.getY()) then
-						s.posicao.ocuparEquipaBranco();
-		));
-		
-		-- ocupar posicao com Arqueiro Preto
-		public ocupaPosPreto: Posicao ==> ()
-				ocupaPosPreto(pos) == (
-				for all s in set arqueiros do (
-					if (s.posicao.getX() = pos.getX()
-					and s.posicao.getY() = pos.getY()) then
-						s.posicao.ocuparEquipaPreto();
-		));
+			
 			
 		-- funçao que recebe um arqueiro e escolhe uma posiçao adjacente aleatoria!
 		-- nao está aleatoria, usa primeira posicao que aparece. precisa funcao da biblioteca math
@@ -202,7 +181,7 @@ operations
 					if (s.posicao.getX() = arq.posicao.getX() and s.posicao.getY() = arq.posicao.getY()) then (
 							posicoes := s.posicao.getAdjacentes();
 							for all p in set posicoes do (
-								if(cor = <Branco>) then (
+								if(cor = ['B','r','a','n','c','o']) then (
 									if(p.getOcupado() = 2 or p.getOcupado() = 0) then (
 										x:=p.getX();
 										y:=p.getY();
@@ -231,55 +210,28 @@ operations
 			);
 			
 			-- verifica se têm algum jogador morto e repo-lo no tabuleiro
-			-- falta atualizar diretamente no arqueiro -> ACHO Q JA TA
-			public reporArqueiroMorto : () ==> ()
-				reporArqueiroMorto() == (
-					dcl x: nat;
-					dcl y: nat;
-					dcl ocupado: nat;
+			public reporArqueiroMorto : set of Posicao ==> bool
+				reporArqueiroMorto(setpos) == (
 					for all arq in set arqueiros do (
 						if(arq.vivo = <False>) then ( 
-							posicoes := retornaPrimeiraLinha();
-							for all pos in set posicoes do (
+							for all pos in set setpos do (
 								if(pos.ocupado = 0) then (
-										x:=pos.getX();
-										y:=pos.getY();
-										ocupado:=pos.getOcupado();
-										--alterar no arq
-										arq.posicao.SetX(x);
-										arq.posicao.SetY(y);
-										if(cor = <Branco>) then (
+										arq.setVivo();
+										arq.SetPosicao(pos);
+										if(cor = ['B','r','a','n','c','o']) then (
 											arq.posicao.ocuparEquipaBranco();)
 										else (
 											arq.posicao.ocuparEquipaPreto();									
 								  	);
 								)									
-							)
-						)
+							);
+						return true;)
 					);
-				);
+					return false;
+				)
+				pre card setpos = 5
+				post card arqueiros = card arqueiros~;
 				
-		 public retornaPrimeiraLinha:  () ==> set of Posicao
-		 retornaPrimeiraLinha() == (
-		 		if(cor = <Branco>) then (
-		 			dcl p1: Posicao := new Posicao (0,0,0);
-		 			dcl p2: Posicao := new Posicao (1,0,0);
-		 			dcl p3: Posicao := new Posicao (2,0,0);
-		 			dcl p4: Posicao := new Posicao (3,0,0);
-		 			dcl p5: Posicao := new Posicao (4,0,0);
-		 			posicoes := {p1,p2,p3,p4,p5};
-		 			return posicoes;
-		 		)
-		 		else (
-		 			dcl p1: Posicao := new Posicao (0,4,0);
-		 			dcl p2: Posicao := new Posicao (1,4,0);
-		 			dcl p3: Posicao := new Posicao (2,4,0);
-		 			dcl p4: Posicao := new Posicao (3,4,0);
-		 			dcl p5: Posicao := new Posicao (4,4,0);
-		 			posicoes := {p1,p2,p3,p4,p5};
-		 		);
-		 		return posicoes;
-		 );
 			
 			
 functions

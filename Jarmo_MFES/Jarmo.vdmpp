@@ -10,14 +10,11 @@ instance variables
  public jogadorAtual : Player;
  public jogadorAdversario: Player;
  public vencedor: Player;
- public temp_pl: Player;
- public adjacentes_poss: set of Posicao;
  
  public recupera_jog: bool;
- public arq_a_matar: Arqueiro;
  
--- private arq_a_mover: Arqueiro;
--- private pos_nova: Posicao;
+ public pontuacao : map Player to nat1 := {|->};
+ public pontos : set of nat1;
 	
 operations
 		public Jarmo : () ==> Jarmo
@@ -91,8 +88,8 @@ operations
 		
 		tabuleiro := {p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p24,p25};
 
-		pl1 := new Player(<Branco>, p1,p2,p3,p4,p5);
-		pl2 := new Player(<Preto>, p21,p22,p23,p24,p25);
+		pl1 := new Player(['B','r','a','n','c','o'], p1,p2,p3,p4,p5);
+		pl2 := new Player(['P','r','e','t','o'], p21,p22,p23,p24,p25);
 		jogadores:= {pl1,pl2};
 		jogadorAtual := pl1;
 		jogadorAdversario := pl2;
@@ -118,7 +115,7 @@ operations
 	pure public gameOver: () ==> bool
 			gameOver() == (
 				dcl res: bool := true;
-				if (jogadorAtual.cor = <Branco>) then (
+				if (jogadorAtual.cor = ['B','r','a','n','c','o']) then (
 					for all arq in set jogadorAtual.arqueiros do
 								if ( arq.vivo = <True> and arq.posicao.getY() <> 4) then 
 									res:= false;)
@@ -133,7 +130,8 @@ operations
 				public verifica_pos: Posicao ==> bool 
 					verifica_pos(posicao) == (
 						return posicao.getOcupado() <> 0
-					);
+					)
+					pre posicao in set tabuleiro;
 
 					
 				
@@ -143,39 +141,69 @@ operations
 			public verifica_posicao: Posicao ==> nat
 				verifica_posicao(pos) == (
 					return pos.getOcupado();
-				);
+				)
+				pre pos in set tabuleiro;
 				
 				--verificar se a posiçao nova é adjacente da atual
 				public verificar_adjacente: Posicao * Posicao ==> bool
 				verificar_adjacente(pos_atual, pos_nova) == (
-					dcl posicao_tab : Posicao := new Posicao(5,5,5);
-					dcl adjacentes : set of Posicao;
-					
-					for all pos_jogador in set tabuleiro do (
-						if(pos_atual.getX() = pos_jogador.getX() and pos_atual.getY() = pos_jogador.getY()) then
-							 posicao_tab := pos_jogador;
+						return (pos_nova in set pos_atual.adjacentes));			
+				
+				
+				public contaPontos: () ==> ()
+				contaPontos() == (
+				
+					dcl pontos_aux : nat1;	
+ 					dcl pontuacao_aux : map Player to nat1;
+ 					dcl vencedor_aux : set of Player;
+					pontos_aux := 1;
+					for all p in set jogadores do (
+						pontuacao:= pontuacao++{p |->  p.contaPontos()};
+					);
+					pontos := rng pontuacao;
+					for all p in set pontos do (
+						if(pontos_aux < p) then 
+							pontos_aux:=p;
 					);
 					
-					adjacentes := posicao_tab.getAdjacentes();					
-					for all pos in set adjacentes do (
-						if(pos_nova.getX() = pos.getX() and pos_nova.getY() = pos.getY()) then
-							return true;
-					);
-					return false;
+					pontuacao_aux := pontuacao:> {pontos_aux};
+					vencedor_aux := dom pontuacao_aux;
+					for all v in set vencedor_aux do(
+						vencedor := v;
+					)
 				);
-									
+				
+				
+				
 				-- Adicionar parametros jogador e nova pos para teste
 				-- Quando posicao é escolhida tem que ser copiada na integra. Ocupado tbm!
 				
 				-- 
 				public jogada: Arqueiro * Posicao ==> bool
 					jogada(arq_a_mover, pos_nova) == (
+					dcl posicoes: set of Posicao;
+					if(jogadorAtual.cor = ['B','r','a','n','c','o']) then (
+		 			dcl p1: Posicao := new Posicao (0,0,0);
+		 			dcl p2: Posicao := new Posicao (1,0,0);
+		 			dcl p3: Posicao := new Posicao (2,0,0);
+		 			dcl p4: Posicao := new Posicao (3,0,0);
+		 			dcl p5: Posicao := new Posicao (4,0,0);
+		 			posicoes := {tabPos(p1),tabPos(p2),tabPos(p3),tabPos(p4),tabPos(p5)};
+		 		)
+		 		else (
+		 			dcl p1: Posicao := new Posicao (0,4,0);
+		 			dcl p2: Posicao := new Posicao (1,4,0);
+		 			dcl p3: Posicao := new Posicao (2,4,0);
+		 			dcl p4: Posicao := new Posicao (3,4,0);
+		 			dcl p5: Posicao := new Posicao (4,4,0);
+		 			posicoes := {tabPos(p1),tabPos(p2),tabPos(p3),tabPos(p4),tabPos(p5)};
+		 		);
 							
 						--verifica se a posicao nova é adjacente da actual
 						
 						-- verificaçao na funçao que da a pos e nao aqui
 						--cancelar o move ou nao deixar fazer o move se a posicao for ocupado por um arqueiro da mesma team
-						if (jogadorAtual.cor = <Branco>) then (
+						if (jogadorAtual.cor = ['B','r','a','n','c','o']) then (
 							if(verifica_posicao(pos_nova) = 1) then (
 								return false;))
 						else (
@@ -185,90 +213,55 @@ operations
 											
 						-- Escolher jogador a recuperar se for o caso --A posiçao nova tem um arqueiro inimigo
 						if(verifica_pos(pos_nova)) then (
-						
-							dcl posicao_temp : Posicao := new Posicao (5,5,5);
-							dcl arq : Arqueiro := new Arqueiro(posicao_temp);
-						
+				
 							jogadorAtual.marcaArqueiro(arq_a_mover);
-							-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
-							--arq_a_mover.marcar();
 							jogadorAdversario.mataArqueiro(pos_nova);
-							arq := jogadorAdversario.arqueiroPorPosicao(pos_nova);
-							jogadorAdversario.desocupaPos(arq);
-							--desocupaTab(pos_nova);
+
 							);
 								
 							
 						-- desocupar posicao antiga 
 						jogadorAtual.desocupaPos(arq_a_mover);
-						-- desocupa no tabuleiro
-						--desocupaTab(arq_a_mover.posicao);
+											
 						
-						-- mudar tambem no arq a mover pq vai ser usado depois para comparaçao no jogador
-						--arq_a_mover.posicao.desocupar();
-						
-						-- ver se muda tudo, -- ocupar posicao atraves de arqueiro
 						jogadorAtual.novaPos(arq_a_mover, pos_nova);
 						
 						-- Se matou e chegou à ultima posicao entao pode recuperar um morto
-							if (jogadorAtual.cor = <Branco>) then (
-									jogadorAtual.ocupaPosBranco(pos_nova);
+							if (jogadorAtual.cor = ['B','r','a','n','c','o']) then (
+								
+									--jogadorAtual.ocupaPosBranco(pos_nova);
 								if(arq_a_mover.marcado = <True>) then(
 								 (if(pos_nova.getY() = 4) then
-								 		jogadorAtual.reporArqueiroMorto();)))
+								 		if(jogadorAtual.reporArqueiroMorto(posicoes)) then jogadorAtual.desmarcaArqueiro(arq_a_mover);
+								 		)))
 									--recupera_jog := true;)))
 							else(
-									jogadorAtual.ocupaPosPreto(pos_nova);
+								--	jogadorAtual.ocupaPosPreto(pos_nova);
 									if(arq_a_mover.marcado = <True>) then(
 								 (if(pos_nova.getY() = 0) then
-									jogadorAtual.reporArqueiroMorto();)));
+									if(jogadorAtual.reporArqueiroMorto(posicoes)) then jogadorAtual.desmarcaArqueiro(arq_a_mover);
+								 		)));
 									--recupera_jog := true;)));
 						
 						
 						MudarTurno();
 						return true;)
-						pre pos_nova in set arq_a_mover.posicao.adjacentes;
-						
-						
-						--_________________________________________________
-						--/////////////////////////////////////////////////
-						--_________________________________________________
-						
-					
-					--teste verifica se mudança no tab afeta arqueiros
-					public testeTolo: () ==> ()
-						testeTolo() == (
-								for all pos_temp in set tabuleiro do (
-									pos_temp.SetX(6);
-									pos_temp.SetY(6);
-									pos_temp.ocuparEquipaBranco();
-					));
-				
+						pre not gameOver()
+						and arq_a_mover in set jogadorAtual.arqueiros and
+						pos_nova in set arq_a_mover.posicao.adjacentes and
+						pos_nova in set tabuleiro;
+
 					
 					
 					-- retorna posicao do tabuleiro igual a parametro
 					
 					public tabPos: Posicao ==> Posicao
 						tabPos(pos) == (
-						dcl ret_pos: Posicao:= new Posicao(9,9,9);
-								for all pos_temp in set tabuleiro do
-									if(pos_temp.getX() = pos.getX() and pos_temp.getY() = pos.getY()) then (
-									ret_pos.X := pos_temp.getX();
-									ret_pos.Y := pos_temp.getY();
-									ret_pos.ocupado := pos_temp.getOcupado();
-									return ret_pos;);
-								
-						return ret_pos;		
+							return	iota s in set tabuleiro & s.getX() = pos.getX() and s.getY() = pos.getY();
 					);
-					-- para teste
-					-- para teste
-					-- para teste
-					public mudatabPos: Posicao ==> ()
-						mudatabPos(pos) == (
-								for all pos_temp in set tabuleiro do
-									if(pos_temp.getX() = pos.getX() and pos_temp.getY() = pos.getY()) then (
-									pos_temp.ocuparEquipaPreto();
-					));
+					
+					
+					
 					
 					-- desocupa posicao pos no tabuleiro
 					public desocupaTab: Posicao ==> ()
@@ -300,7 +293,7 @@ operations
 									return;		
 					)));
 					
-				
+			
 		
 functions
 -- TODO Define functiones here
