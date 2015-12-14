@@ -226,7 +226,8 @@ operations
 						
 						
 						MudarTurno();
-						return true;);
+						return true;)
+						pre pos_nova in set arq_a_mover.posicao.adjacentes;
 						
 						
 						--_________________________________________________

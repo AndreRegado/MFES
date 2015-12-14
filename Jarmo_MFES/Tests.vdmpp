@@ -95,30 +95,93 @@ class Tests
              public Tests_jogada_casa_inimigo : () ==> ()
 							Tests_jogada_casa_inimigo() == 
             ( 
+            -- Primeira linha
+		dcl p1: Posicao := new Posicao(0,0,1);
+		dcl p2: Posicao := new Posicao(1,0,1);
+		dcl p3: Posicao := new Posicao(2,0,1);
+		dcl p4: Posicao := new Posicao(3,0,1);
+		dcl p5: Posicao := new Posicao(4,0,1);
+		
+		-- Segunda linha
+		dcl p6: Posicao := new Posicao(0,1,0);
+		dcl p7: Posicao := new Posicao(1,1,0);
+		dcl p8: Posicao := new Posicao(2,1,0);
+		dcl p9: Posicao := new Posicao(3,1,0);
+		dcl p10: Posicao := new Posicao(4,1,0);
+		
+		-- Terceira linha
+		dcl p11: Posicao := new Posicao(0,2,0);
+		dcl p12: Posicao := new Posicao(1,2,0);
+		dcl p13: Posicao := new Posicao(2,2,0);
+		dcl p14: Posicao := new Posicao(3,2,0);
+		dcl p15: Posicao := new Posicao(4,2,0);
+		
+		-- Quarta linha
+		dcl p16: Posicao := new Posicao(0,3,0);
+		dcl p17: Posicao := new Posicao(1,3,0);
+		dcl p18: Posicao := new Posicao(2,3,0);
+		dcl p19: Posicao := new Posicao(3,3,0);
+		dcl p20: Posicao := new Posicao(4,3,0);
+		
+		-- Quinta linha
+		dcl p21: Posicao := new Posicao(0,4,2);
+		dcl p22: Posicao := new Posicao(1,4,2);
+		dcl p23: Posicao := new Posicao(2,4,2);
+		dcl p24: Posicao := new Posicao(3,4,2);
+		dcl p25: Posicao := new Posicao(4,4,2);
+		
+	
+		
+
 	            dcl	j_1: Jarmo:=new Jarmo();
 	            dcl bool_test: bool;
 	            dcl bool_test2: bool;
-	            dcl bool_test3: bool;
-	            
-							dcl p1: Posicao := new Posicao(0,0,1);
-							dcl p12: Posicao := new Posicao(1,2,0);
+	             
 							dcl p122: Posicao := new Posicao(1,2,1);
 							
-							dcl p24: Posicao := new Posicao(3,4,2);
 							
-	           	dcl a1: Arqueiro := new Arqueiro(p1);					
-  						dcl a2: Arqueiro := new Arqueiro(p12);	
-   						
+	           	dcl a1: Arqueiro;
+	           	dcl a2: Arqueiro;		
+  								-- Definir adjacentes
+		p1.setAdjacentes({p12,p8});
+		p2.setAdjacentes({p11,p9});
+		p3.setAdjacentes({p6,p12,p10});
+		p4.setAdjacentes({p7,p15});
+		p5.setAdjacentes({p8,p14});
+		p6.setAdjacentes({p3,p13});
+		p7.setAdjacentes({p4,p8,p14,p12});
+		p8.setAdjacentes({p1,p5,p17,p7,p9});
+		p9.setAdjacentes({p2,p8,p14,p20});
+		p10.setAdjacentes({p3,p13});
+		p11.setAdjacentes({p2,p22});
+		p12.setAdjacentes({p1,p7,p3,p19,p17,p21});
+		p13.setAdjacentes({p6,p10,p16,p24});
+		p14.setAdjacentes({p7,p9,p5,p25,p19});
+		p15.setAdjacentes({p4,p18});
+		p16.setAdjacentes({p13,p23});
+		p17.setAdjacentes({p12,p8,p18,p24});
+		p18.setAdjacentes({p17,p15,p19,p25,p21});
+		p19.setAdjacentes({p22,p18,p12,p14});
+		p20.setAdjacentes({p23,p9});
+		p21.setAdjacentes({p12,p18});
+		p22.setAdjacentes({p11,p19});
+		p23.setAdjacentes({p16,p14,p20});
+		p24.setAdjacentes({p17,p13});
+		p25.setAdjacentes({p18,p14});
+   						a1:= new Arqueiro(p1);	
+  						a2 := new Arqueiro(p21);
+  						
+  							
    						bool_test:=	j_1.jogada(a1,p12);
+   						bool_test2:= j_1.jogada(a2,p12);
    							--arqueiro marcado na posicao nova (adversário já trocou, agora adversario = branco)
    							-- posicao do arqueiro ainda nao mudou por isso nao se testa com a nova posicao
    							--arq_movido := j_1.jogadorAdversario.arqueiroPorPosicao(p12);
-   							--j_1.testeTolo();  						
-   						a2 := j_1.jogadorAtual.arqueiroPorPosicao(p122);
+   							--j_1.testeTolo();
    						--bool_test2:= j_1.jogada(a2, p12);
    						
-   						AssertTrue(bool_test = true  and a2.posicao.getX() = 1 and a2.posicao.getY() = 2));
-   						
+   						AssertTrue(bool_test = true);
+   						AssertTrue(bool_test2 = true););
    							--AssertTrue(arq_movido.marcado = <True>);
    							--arqueio inimigo morto (
    							--arq_inimigo_morto := j_1.jogadorAtual.arqueiroPorPosicao(p12);
