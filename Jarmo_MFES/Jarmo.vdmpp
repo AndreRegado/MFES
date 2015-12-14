@@ -6,6 +6,7 @@ instance variables
 -- Jogador 1 : Branco - começa em cima
 -- Jogador 2 : Preto - começa em baixo
  public jogadores: set of Player;
+ 	inv card jogadores = 2;
  public tabuleiro: set of Posicao;
  public jogadorAtual : Player;
  public jogadorAdversario: Player;
@@ -261,37 +262,6 @@ operations
 					);
 					
 					
-					
-					
-					-- desocupa posicao pos no tabuleiro
-					public desocupaTab: Posicao ==> ()
-						desocupaTab(pos) == (
-								for all pos_temp in set tabuleiro do (
-									if(pos_temp.getX() = pos.getX() and pos_temp.getY() = pos.getY()) then (
-									pos_temp.desocupar();
-									return;		
-					)));
-					
-					-- ocupa posicao no tabuleiro com arqueiro branco
-					public ocupaTabBranco: Posicao ==> ()
-						ocupaTabBranco(pos) == (
-								for all pos_temp in set tabuleiro do (
-									if(pos_temp.getX() = pos.getX() 
-									and pos_temp.getY() = pos.getY()) then (
-									pos_temp.ocuparEquipaBranco();
-									return;		
-					)));
-					
-					
-					-- ocupa posicao no tabuleiro com arqueiro branco
-					public ocupaTabPreto: Posicao ==> ()
-						ocupaTabPreto(pos) == (
-								for all pos_temp in set tabuleiro do (
-									if(pos_temp.getX() = pos.getX() 
-									and pos_temp.getY() = pos.getY()) then (
-									pos_temp.ocuparEquipaPreto();
-									return;		
-					)));
 					
 			
 		

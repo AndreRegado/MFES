@@ -14,10 +14,10 @@ public X: nat;
 public Y: nat;
 public ocupado : nat;
 public adjacentes : set of Posicao;
-	-- inv self not in set adjacentes;
+	-- inv self_not_in_set_adjacentes();
 	
 operations	
--- TODO Define operations here
+	
 public Posicao : nat * nat * nat ==> Posicao
 			 Posicao(x,y, ocup) == (
 			 		X := x;
@@ -54,6 +54,11 @@ public ocuparEquipaPreto : () ==> ()
 			
 public desocupar : () ==> ()
 			desocupar() == (ocupado := 0);
+			
+			
+--pure self_not_in_set_adjacentes: () ==> bool
+--	self_not_in_set_adjacentes() == (
+--	return self not in set adjacentes;);
 			
 functions
 -- TODO Define functiones here
